@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="class_name_main">com.scanning.qrcode.abcd.WeMainActivity</string>
+    <string name="class_name_ad_service">com.facebook.TurnOnAdvertisementService</string>
+</resources>

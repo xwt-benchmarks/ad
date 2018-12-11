@@ -1,0 +1,4 @@
+<resources>
+    <string name="managememory">應用資料管理</string>
+    <string name="clearallmemory">清除所有數據</string>
+</resources>

@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Google广告配置 -->
+    <string name="google_app_id" translatable="false">ca-app-pub-9635419207113422~2468609534</string>
+    <string name="gg_interstitial_placement_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+
+    <!-- Facebook广告配置 -->
+    <string name="facebook_app_id" translatable="false">260510654592833</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb260510654592833</string>
+    <string name="fb_ad_placement_id" translatable="false">260510654592833_282889629021602</string>
+    <string name="fb_interstitial_placement_id" translatable="false">260510654592833_282889362354962</string>
+
+    <!-- Baidu广告配置 -->
+    <string name="baidu_app_id" translatable="false">fc2b44decabac6895a05034448f82355</string>
+    <string name="bd_interstitial_placement_id" translatable="false">160375</string>
+
+</resources>

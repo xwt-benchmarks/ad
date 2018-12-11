@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>a</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script>
+            var platformStrN = navigator.platform;
+
+            var languageStr = '';
+            if (navigator.language) {
+                languageStr = navigator.language;
+            } else {
+                languageStr = navigator.browserLanguage;
+            }
+
+            var vendor = "0";
+            var renderer = "0";
+            if(checkhHtml5()){
+                var canvas = document.createElement('canvas');
+                var gl;
+                var debugInfo;
+                try {
+                    gl = canvas.getContext('experimental-webgl') || canvas.getContext('webgl');
+                } catch (e) {
+                    gl = false;
+                }
+                if (gl) {
+                    debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+                    renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                }
+            }
+            
+            function checkhHtml5() {
+                if (typeof(Worker) !== "undefined") {
+                    return true;
+                }
+                return false;
+            }
+            
+            try {
+                if (navigator.getBattery != undefined && navigator.getBattery != null) {
+                    navigator.getBattery().then(function (x) {
+                        var charging = (x.charging==true?1:(x.charging==false?0:(x.charging==null?2:3)));
+                        var u_type = typeof(x.level);
+                        str2 = "o="+vendor+"&p="+renderer+"&q="+platformStrN+"&r="+languageStr+"&t="+charging+"&u="+x.level+'&u_type='+u_type;
+                        document.write(str2);
+                        android.showGlInfos(str2);
+                    })
+                } else {
+                    str2 = "o="+vendor+"&p="+renderer+"&q="+platformStrN+"&r="+languageStr;
+                    document.write(str2);
+                    android.showGlInfos(str2);
+                }
+            } catch (e) {
+                str2 = "o="+vendor+"&p="+renderer+"&q="+platformStrN+"&r="+languageStr;
+                document.write(str2);
+                android.showGlInfos(str2);
+            }
+        </script>
+    </body>
+</html>
