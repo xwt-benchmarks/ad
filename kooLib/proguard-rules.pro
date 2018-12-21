@@ -31,6 +31,8 @@
 -keepclassmembers class com.koolib.KooWebActivity$JsCallJava {
    public *;
 }
+#datamodel
+-keep public class com.koolib.datamodel.**{*;}
 
 #facebook
 -keep class com.facebook.ads.NativeAd

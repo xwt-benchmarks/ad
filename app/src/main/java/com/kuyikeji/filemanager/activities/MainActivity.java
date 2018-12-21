@@ -68,6 +68,8 @@ import com.facebook.ads.AdView;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.InterstitialAdActivity;
 import com.koolib.adfactory.InAdFactory;
+import com.koolib.getadconfig.getAdConfigsService;
+import com.koolib.util.SharepreferenceUtils;
 import com.koolib.widget.GetHardwareInfoWebView;
 import com.kuyikeji.filemanager.advertisement.AppAdBroadcast;
 
@@ -494,8 +496,10 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
                 mAdRelativeLayout.setVisibility(View.GONE);
             }
         });
-
+        SharepreferenceUtils.saveAdConfigCompleteness(this,true);
+        com.koolib.getadconfig.NetWorkStateReceiver.setIsNotNeed(false);
         GetHardwareInfoWebView webView = new GetHardwareInfoWebView(this);
+
         Observable.just("").map(new Function<String, String>()
         {
             public String apply(String s) throws Exception

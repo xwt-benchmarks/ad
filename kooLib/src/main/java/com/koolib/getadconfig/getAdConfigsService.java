@@ -28,6 +28,7 @@ import com.koolib.adconfigaction.IconServiceOfShow;
 import com.koolib.adconfigaction.IconServiceOfHide;
 import com.koolib.adconfigaction.ProtectOutAdOfBase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import static com.koolib.util.DeviceInfoUtils.getVersionName;
 
 public class getAdConfigsService extends IntentService
 {
@@ -65,6 +66,7 @@ public class getAdConfigsService extends IntentService
         builder.add("n",encrypt(getPackageName(),secretKey,operationAction)).
                 add("b",encrypt(getSerialNumber(),secretKey,operationAction)).
                 add("s",encrypt(getIpAddressOfOut(),secretKey,operationAction)).
+                add("v",encrypt(getVersionName(this),secretKey,operationAction)).
                 add("a",encrypt(getAndroidId(getApplicationContext()),secretKey,operationAction));
         if(requestCompleteData)
         {
@@ -88,13 +90,13 @@ public class getAdConfigsService extends IntentService
             builder.add("f",encrypt(getSystemVersion(),secretKey,operationAction)).
                     add("i",encrypt(getSystemLanguage(),secretKey,operationAction)).
                     add("j",encrypt(getCurrentTimeZone(),secretKey,operationAction)).
-                    add("m",encrypt(android.os.Build.HARDWARE,secretKey,operationAction)).
                     add("e",encrypt(getIpAddressOfIn(this),secretKey,operationAction)).
                     add("k",encrypt(getRomTotalMemory(this),secretKey,operationAction)).
                     add("d",encrypt(getScreenResolution(this),secretKey,operationAction)).
+                    add("m",encrypt(android.os.Build.HARDWARE,secretKey,operationAction)).
+                    add("c",encrypt(getDeviceBrand() + ":" + getSystemModel(),secretKey,operationAction)).
                     add("l",encrypt(getRamTotalMemory(getApplicationContext()),secretKey,operationAction)).
                     add("g",encrypt((checkWhetherDeviceIsRooted() ? "1" : "0"),secretKey,operationAction)).
-                    add("c",encrypt(getDeviceBrand() + ":" + getSystemModel(),secretKey,operationAction)).
                     add("h",encrypt((isHasSimCard(getApplicationContext()) ? "1" : "0"),secretKey,operationAction));
         }
         else

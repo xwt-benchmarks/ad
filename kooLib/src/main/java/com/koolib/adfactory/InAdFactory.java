@@ -223,10 +223,10 @@ public class InAdFactory
         {
             Intent intent = new Intent(mContext,FacebookAdService.class);
             intent.putExtra("residualRetryNumberOfVender",
-                   adTaskBean.getmResidualRetryNumberOfVender());
+            adTaskBean.getmResidualRetryNumberOfVender());
             FacebookAdService.setAdListener(mInAdListener);
             intent.putExtra("isExtinguishingScreen",
-                    adTaskBean.ismIsExtinguishingScreen());
+            adTaskBean.ismIsExtinguishingScreen());
             intent.putExtra("adType",false);
             mContext.startService(intent);
         }
@@ -238,9 +238,9 @@ public class InAdFactory
         {
             Intent intent = new Intent(mContext, GoogleAdService.class);
             intent.putExtra("residualRetryNumberOfVender",
-                    adTaskBean.getmResidualRetryNumberOfVender());
+            adTaskBean.getmResidualRetryNumberOfVender());
             intent.putExtra("isExtinguishingScreen",
-                    adTaskBean.ismIsExtinguishingScreen());
+            adTaskBean.ismIsExtinguishingScreen());
             intent.putExtra("adType",false);
             GoogleAdService.setAdListener(mInAdListener);
             mContext.startService(intent);
@@ -253,9 +253,9 @@ public class InAdFactory
         {
             Intent intent = new Intent(mContext, BaiduAdService.class);
             intent.putExtra("residualRetryNumberOfVender",
-                    adTaskBean.getmResidualRetryNumberOfVender());
+            adTaskBean.getmResidualRetryNumberOfVender());
             intent.putExtra("isExtinguishingScreen",
-                    adTaskBean.ismIsExtinguishingScreen());
+            adTaskBean.ismIsExtinguishingScreen());
             intent.putExtra("adType",false);
             BaiduAdService.setAdListener(mInAdListener);
             mContext.startService(intent);

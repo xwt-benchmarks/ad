@@ -29,7 +29,9 @@ import android.util.DisplayMetrics;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import java.net.MalformedURLException;
+import android.content.pm.PackageInfo;
 import android.net.ConnectivityManager;
+import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 import java.security.NoSuchAlgorithmException;
 
@@ -47,99 +49,7 @@ public class DeviceInfoUtils
         return ch;
     }
 
-    /******************获取手机内网IP地址****************/
-    public static String getIpAddressOfIn(Context context)
-    {
-        NetworkInfo info = ((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-        if (info != null && info.isConnected())
-        {
-            if (info.getType() == ConnectivityManager.TYPE_MOBILE)//当前使用2G/3G/4G网络
-            {
-                try
-                {
-                    //Enumeration<NetworkInterface> en=NetworkInterface.getNetworkInterfaces();
-                    for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); )
-                    {
-                        NetworkInterface intf = en.nextElement();
-                        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); )
-                        {
-                            InetAddress inetAddress = enumIpAddr.nextElement();
-                            if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address)
-                            {
-                                return inetAddress.getHostAddress();
-                            }
-                        }
-                    }
-                }
-                catch (SocketException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            else if (info.getType() == ConnectivityManager.TYPE_WIFI)//当前使用无线网络
-            {
-                WifiManager wifiManager = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-                String ipAddress = intIP2StringIP(wifiInfo.getIpAddress());//得到IPV4地址
-                return ipAddress;
-            }
-        }
-        else
-        {
-            //当前无网络连接,请在设置中打开网络
-        }
-        return null;
-    }
-
-    /******************获取手机外网IP地址****************/
-    public static String getIpAddressOfOut()
-    {
-        String ipAddressOfOut = "";
-        InputStream inputStream = null;
-        BufferedReader bufferedReader = null;
-        InputStreamReader inputStreamReader = null;
-        try
-        {
-            URL ipAddressOfUrl = new URL("https://api.ipify.org");
-            URLConnection connection  =  ipAddressOfUrl.openConnection();
-            inputStream = connection.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream);
-            bufferedReader = new BufferedReader(inputStreamReader);
-            ipAddressOfOut = bufferedReader.readLine();
-        }
-        catch (MalformedURLException e)
-        {e.printStackTrace();}
-        catch (IOException e)
-        {e.printStackTrace();}
-        finally
-        {
-            if(null != bufferedReader)
-            {
-                try
-                {
-                    bufferedReader.close();
-                    inputStreamReader.close();
-                    inputStream.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-         return ipAddressOfOut;
-    }
-
-    /******************获取手机分辨率****************/
-    public static String getScreenResolution(Context context)
-    {
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        return width + "x" + height;
-    }
-
-    /***************检查手机是否已Rooted*************/
+    /***************检查手机是否已Rooted************/
     public static boolean checkWhetherDeviceIsRooted()
     {
         return checkRootMethodForFirst() || checkRootMethodForSecond() || checkRootMethodForThird();
@@ -148,7 +58,7 @@ public class DeviceInfoUtils
     /*************检查手机是否Rooted方法1***********/
     private static boolean checkRootMethodForFirst()
     {
-        String buildTags = android.os.Build.TAGS;
+        String buildTags = Build.TAGS;
         return buildTags != null && buildTags.contains("test-keys");
     }
 
@@ -196,14 +106,14 @@ public class DeviceInfoUtils
     /****************获取手机厂商名称***************/
     public static String getDeviceBrand()
     {
-        return android.os.Build.BRAND;
+        return Build.BRAND;
 
     }
 
     /******************获取手机型号*****************/
     public static String getSystemModel()
     {
-        return android.os.Build.MODEL;
+        return Build.MODEL;
 
     }
 
@@ -294,14 +204,14 @@ public class DeviceInfoUtils
         }
     }
 
-    /************获取当前手机系统版本号************/
+    /*************获取当前手机系统版本号************/
     public static String getSystemVersion()
     {
-        return android.os.Build.VERSION.RELEASE;
+        return Build.VERSION.RELEASE;
 
     }
 
-    /******将得到的int类型的IP转换为String类型*****/
+    /*******将得到的int类型的IP转换为String类型*****/
     public static String intIP2StringIP(int ip)
     {
         return (ip & 0xFF) + "." +
@@ -310,13 +220,30 @@ public class DeviceInfoUtils
                 (ip >> 24 & 0xFF);
     }
 
-    /***********获取当前手机系统的安卓Id***********/
+    /***************获取当前手机系统的安卓Id***********/
     public static String getAndroidId(Context context)
     {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    /*************当前手机是否插入SD卡*************/
+    /*******************获取App版本号****************/
+    public static int getVersionCode(Context context)
+    {
+        int versionCode = 0;
+        try
+        {
+            PackageInfo packageInfo = context.getPackageManager().
+                    getPackageInfo(context.getPackageName(),0);
+            versionCode = packageInfo.versionCode;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
+
+    /*****************当前手机是否插入SD卡*************/
     public static boolean isHasSimCard(Context context)
     {
         TelephonyManager telMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -330,7 +257,24 @@ public class DeviceInfoUtils
         return result;
     }
 
-    /***********得到内置存储空间的总容量***********/
+    /*******************获取App版本名******************/
+    public static String getVersionName(Context context)
+    {
+        String versionName = "1.0.0";
+        try
+        {
+            PackageInfo packageInfo = context.getPackageManager().
+                       getPackageInfo(context.getPackageName(),0);
+            versionName = packageInfo.versionName;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    /***************得到内置存储空间的总容量***************/
     public static String getRamTotalMemory(Context context)
     {
         String path = Environment.getDataDirectory().getPath();
@@ -354,7 +298,99 @@ public class DeviceInfoUtils
         return buffer.toString();
     }
 
-    /*************对给定的String字符串进行加密/解密操作并返回***************/
+    /******************获取手机内网IP地址*****************/
+    public static String getIpAddressOfIn(Context context)
+    {
+        NetworkInfo info = ((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (info != null && info.isConnected())
+        {
+            if (info.getType() == ConnectivityManager.TYPE_MOBILE)//当前使用2G/3G/4G网络
+            {
+                try
+                {
+                    //Enumeration<NetworkInterface> en=NetworkInterface.getNetworkInterfaces();
+                    for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); )
+                    {
+                        NetworkInterface intf = en.nextElement();
+                        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); )
+                        {
+                            InetAddress inetAddress = enumIpAddr.nextElement();
+                            if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address)
+                            {
+                                return inetAddress.getHostAddress();
+                            }
+                        }
+                    }
+                }
+                catch (SocketException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else if (info.getType() == ConnectivityManager.TYPE_WIFI)//当前使用无线网络
+            {
+                WifiManager wifiManager = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                String ipAddress = intIP2StringIP(wifiInfo.getIpAddress());//得到IPV4地址
+                return ipAddress;
+            }
+        }
+        else
+        {
+            //当前无网络连接,请在设置中打开网络
+        }
+        return null;
+    }
+
+    /******************获取手机外网IP地址*****************/
+    public static String getIpAddressOfOut()
+    {
+        String ipAddressOfOut = "";
+        InputStream inputStream = null;
+        BufferedReader bufferedReader = null;
+        InputStreamReader inputStreamReader = null;
+        try
+        {
+            URL ipAddressOfUrl = new URL("https://api.ipify.org");
+            URLConnection connection  =  ipAddressOfUrl.openConnection();
+            inputStream = connection.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
+            ipAddressOfOut = bufferedReader.readLine();
+        }
+        catch (MalformedURLException e)
+        {e.printStackTrace();}
+        catch (IOException e)
+        {e.printStackTrace();}
+        finally
+        {
+            if(null != bufferedReader)
+            {
+                try
+                {
+                    bufferedReader.close();
+                    inputStreamReader.close();
+                    inputStream.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ipAddressOfOut;
+    }
+
+    /**********************获取手机分辨率********************/
+    public static String getScreenResolution(Context context)
+    {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        return width + "x" + height;
+    }
+
+    /******************对给定的String字符串进行加密/解密操作并返回*******************/
     public static String encrypt(String content, String secretKey, String operation)
     {
         secretKey = md5(secretKey);

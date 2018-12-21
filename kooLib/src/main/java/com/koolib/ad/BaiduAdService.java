@@ -145,7 +145,7 @@ public class BaiduAdService extends Service
     public synchronized void onCreate()
     {
         super.onCreate();
-        DuAdNetwork.init(this, getConfigJSON(getApplicationContext()));
+        DuAdNetwork.init(this,getConfigJSON(getApplicationContext()));
     }
 
 

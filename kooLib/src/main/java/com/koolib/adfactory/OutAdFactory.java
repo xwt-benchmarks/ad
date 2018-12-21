@@ -33,7 +33,7 @@ public class OutAdFactory
     private volatile static OutAdFactory mInstance;
     private int mEffectiveAdIndex;//当前播放广告所属厂商的下标
     private List<String> mEffectiveAdVenders;//可以播放广告的厂商
-    /*********************************************/
+    /***********************************************************/
     private AdConfigBean mAdConfigBean;
     private BlockingQueue<AdTaskBean> mAdQueue;
     private int mPlayedAdTotalNum;//已经播放过的广告数量
@@ -161,6 +161,53 @@ public class OutAdFactory
         };
     }
 
+    /**********************************************************************************************/
+    /**********************************************************************************************/
+    private void openFacebookAd(AdTaskBean adTaskBean)
+    {
+        if(null != mContext && null != mOutAdListener)
+        {
+            Intent intent = new Intent(mContext,FacebookAdService.class);
+            intent.putExtra("residualRetryNumberOfVender",
+            adTaskBean.getmResidualRetryNumberOfVender());
+            FacebookAdService.setAdListener(mOutAdListener);
+            intent.putExtra("isExtinguishingScreen",
+            adTaskBean.ismIsExtinguishingScreen());
+            intent.putExtra("adType",true);
+            mContext.startService(intent);
+        }
+    }
+
+    private void openGoogleAd(AdTaskBean adTaskBean)
+    {
+        if(null != mContext && null != mOutAdListener)
+        {
+            Intent intent = new Intent(mContext, GoogleAdService.class);
+            intent.putExtra("residualRetryNumberOfVender",
+            adTaskBean.getmResidualRetryNumberOfVender());
+            intent.putExtra("isExtinguishingScreen",
+            adTaskBean.ismIsExtinguishingScreen());
+            GoogleAdService.setAdListener(mOutAdListener);
+            intent.putExtra("adType",true);
+            mContext.startService(intent);
+        }
+    }
+
+    private void openBaiduAd(AdTaskBean adTaskBean)
+    {
+        if(null != mContext && null != mOutAdListener)
+        {
+            Intent intent = new Intent(mContext, BaiduAdService.class);
+            intent.putExtra("residualRetryNumberOfVender",
+            adTaskBean.getmResidualRetryNumberOfVender());
+            intent.putExtra("isExtinguishingScreen",
+            adTaskBean.ismIsExtinguishingScreen());
+            BaiduAdService.setAdListener(mOutAdListener);
+            intent.putExtra("adType",true);
+            mContext.startService(intent);
+        }
+    }
+
 
     /**********************************************************************************************/
     /**********************************************************************************************/
@@ -191,6 +238,28 @@ public class OutAdFactory
                 }
             }
         });
+    }
+
+    private synchronized void openAd(AdTaskBean adTaskBean)
+    {
+        if(null != adTaskBean && adTaskBean.ismIsAppOutAd() && null != adTaskBean.getmVenderName())
+        {
+            switch(adTaskBean.getmVenderName().toLowerCase().trim())
+            {
+                case "facebook":openFacebookAd(adTaskBean);break;
+                case "google":openGoogleAd(adTaskBean);break;
+                case "baidu":openBaiduAd(adTaskBean);break;
+                default:
+                {
+                    mIsPlayNextAd = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            mIsPlayNextAd = true;
+        }
     }
 
     public synchronized void addAd(boolean isExtinguishingScreen,int residualRetryNumberOfVender)
@@ -241,73 +310,72 @@ public class OutAdFactory
         }
     }
 
-    private synchronized void openAd(AdTaskBean adTaskBean)
+    public synchronized void addBaiduAd(boolean isExtinguishingScreen,int residualRetryNumberOfVender,boolean isJoinCircularQueue)
     {
-        if(null != adTaskBean && adTaskBean.ismIsAppOutAd() && null != adTaskBean.getmVenderName())
+        if(null != mAdConfigBean && null != mAdConfigBean.getData() && mAdQueue.size() < 66 &&(mAdQueue.size() + mPlayedAdTotalNum) < mAdConfigBean.getData().getMaxNumForAppOutAdOfEveryDay() && residualRetryNumberOfVender > 0)
         {
-            switch(adTaskBean.getmVenderName().toLowerCase().trim())
+            AdTaskBean adTaskBean = new AdTaskBean();
+            adTaskBean.setmIsAppOutAd(true);
+            adTaskBean.setmVenderName("baidu");
+            adTaskBean.setmTaskId(mAdQueue.size());
+            adTaskBean.setmIsExtinguishingScreen(isExtinguishingScreen);
+            adTaskBean.setmResidualRetryNumberOfVender(residualRetryNumberOfVender);
+            try
             {
-                case "facebook":openFacebookAd(adTaskBean);break;
-                case "google":openGoogleAd(adTaskBean);break;
-                case "baidu":openBaiduAd(adTaskBean);break;
-                default:
-                {
-                    mIsPlayNextAd = true;
-                    break;
-                }
+                mAdQueue.put(adTaskBean);
+                if(isJoinCircularQueue)mEffectiveAdIndex++;
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+                Log.i(TAG, "Add BaiDuOutAd Fail！");
             }
         }
-        else
+    }
+
+    public synchronized void addGoogleAd(boolean isExtinguishingScreen,int residualRetryNumberOfVender,boolean isJoinCircularQueue)
+    {
+        if(null != mAdConfigBean && null != mAdConfigBean.getData() && mAdQueue.size() < 66 &&(mAdQueue.size() + mPlayedAdTotalNum) < mAdConfigBean.getData().getMaxNumForAppOutAdOfEveryDay() && residualRetryNumberOfVender > 0 && !isExtinguishingScreen)
         {
-            mIsPlayNextAd = true;
+            AdTaskBean adTaskBean = new AdTaskBean();
+            adTaskBean.setmIsAppOutAd(true);
+            adTaskBean.setmVenderName("google");
+            adTaskBean.setmTaskId(mAdQueue.size());
+            adTaskBean.setmIsExtinguishingScreen(isExtinguishingScreen);
+            adTaskBean.setmResidualRetryNumberOfVender(residualRetryNumberOfVender);
+            try
+            {
+                mAdQueue.put(adTaskBean);
+                if(isJoinCircularQueue)mEffectiveAdIndex++;
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+                Log.i(TAG, "Add GoogleOutAd Fail！");
+            }
         }
     }
 
-
-    /**********************************************************************************************/
-    /**********************************************************************************************/
-    private void openFacebookAd(AdTaskBean adTaskBean)
+    public synchronized void addFacebookAd(boolean isExtinguishingScreen,int residualRetryNumberOfVender,boolean isJoinCircularQueue)
     {
-        if(null != mContext && null != mOutAdListener)
+        if(null != mAdConfigBean && null != mAdConfigBean.getData() && mAdQueue.size() < 66 &&(mAdQueue.size() + mPlayedAdTotalNum) < mAdConfigBean.getData().getMaxNumForAppOutAdOfEveryDay() && residualRetryNumberOfVender > 0)
         {
-            Intent intent = new Intent(mContext,FacebookAdService.class);
-            intent.putExtra("residualRetryNumberOfVender",
-                   adTaskBean.getmResidualRetryNumberOfVender());
-            FacebookAdService.setAdListener(mOutAdListener);
-            intent.putExtra("isExtinguishingScreen",
-                    adTaskBean.ismIsExtinguishingScreen());
-            intent.putExtra("adType",true);
-            mContext.startService(intent);
-        }
-    }
-
-    private void openGoogleAd(AdTaskBean adTaskBean)
-    {
-        if(null != mContext && null != mOutAdListener)
-        {
-            Intent intent = new Intent(mContext, GoogleAdService.class);
-            intent.putExtra("residualRetryNumberOfVender",
-                   adTaskBean.getmResidualRetryNumberOfVender());
-            intent.putExtra("isExtinguishingScreen",
-                    adTaskBean.ismIsExtinguishingScreen());
-            GoogleAdService.setAdListener(mOutAdListener);
-            intent.putExtra("adType",true);
-            mContext.startService(intent);
-        }
-    }
-
-    private void openBaiduAd(AdTaskBean adTaskBean)
-    {
-        if(null != mContext && null != mOutAdListener)
-        {
-            Intent intent = new Intent(mContext, BaiduAdService.class);
-            intent.putExtra("residualRetryNumberOfVender",
-                   adTaskBean.getmResidualRetryNumberOfVender());
-            intent.putExtra("isExtinguishingScreen",
-                    adTaskBean.ismIsExtinguishingScreen());
-            BaiduAdService.setAdListener(mOutAdListener);
-            intent.putExtra("adType",true);
-            mContext.startService(intent);
+            AdTaskBean adTaskBean = new AdTaskBean();
+            adTaskBean.setmIsAppOutAd(true);
+            adTaskBean.setmVenderName("facebook");
+            adTaskBean.setmTaskId(mAdQueue.size());
+            adTaskBean.setmIsExtinguishingScreen(isExtinguishingScreen);
+            adTaskBean.setmResidualRetryNumberOfVender(residualRetryNumberOfVender);
+            try
+            {
+                mAdQueue.put(adTaskBean);
+                if(isJoinCircularQueue)mEffectiveAdIndex++;
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+                Log.i(TAG, "Add FaceBookOutAd Fail！");
+            }
         }
     }
 }

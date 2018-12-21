@@ -190,7 +190,7 @@ public class FacebookAdService extends Service implements InterstitialAdListener
             mOutAdListener.onAdError("Facebook",adError.getErrorCode(),adError.getErrorMessage());
             if(mPlayedOutAdNumber > mAdConfigBean.getData().getAppOutAdTryonNumbers())
             {
-                 mOutAdListener.onAdErrorWithOpenNextAd("Facebook",adError.getErrorCode(),adError.getErrorMessage(),mIsExtinguishingScreen,mResidualRetryNumberOfVender - 1);
+                mOutAdListener.onAdErrorWithOpenNextAd("Facebook",adError.getErrorCode(),adError.getErrorMessage(),mIsExtinguishingScreen,mResidualRetryNumberOfVender - 1);
                 return;
             }
             mPlayedOutAdNumber++;

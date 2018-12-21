@@ -2,7 +2,7 @@
 
     <!-- Google广告配置 -->
     <string name="google_app_id" translatable="false">ca-app-pub-9635419207113422~2468609534</string>
-    <string name="gg_interstitial_placement_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="gg_interstitial_placement_id" translatable="false">ca-app-pub-9635419207113422/8199383098</string>
 
     <!-- Facebook广告配置 -->
     <string name="facebook_app_id" translatable="false">260510654592833</string>

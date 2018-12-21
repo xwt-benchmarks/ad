@@ -37,7 +37,8 @@ public class OutAdBroadcast extends BroadcastReceiver
                     {
                         ALiveManager.getInstance().finishAlive();
                         ALiveManager.getInstance().startAlive(context);
-                        mNextTimeForCanAddAd = System.currentTimeMillis() + mAdConfigBean.getData().getAppOutAdPlayInterval() * 1000;
+                        mNextTimeForCanAddAd = System.currentTimeMillis() +
+                        mAdConfigBean.getData().getAppOutAdPlayInterval() * 1000;
                         OutAdFactory.getInstance(context).syncAdConfigAndPollAd();
                         if(action == Intent.ACTION_SCREEN_OFF)
                             OutAdFactory.getInstance(context).addAd(true,mAdConfigBean.getData().getAdBeans().size());

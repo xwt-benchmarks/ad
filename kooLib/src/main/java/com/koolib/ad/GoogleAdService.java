@@ -134,7 +134,7 @@ public class GoogleAdService extends Service
 
     private class GoogleAdListener extends AdListener
     {
-        public void onAdLoaded() 
+        public void onAdLoaded()
         {
             super.onAdLoaded();
             Log.i("ads","Google:onAdLoaded() Is Called");
