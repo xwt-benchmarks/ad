@@ -116,7 +116,7 @@ public class ProtectOutAdOfService extends AbsWorkService
     {
         if(!isWorkRunning(intent,flags,startId))
         {
-            sDisposable = Observable.interval(3, TimeUnit.SECONDS).doOnDispose(new Action()
+            sDisposable = Observable.interval(1,TimeUnit.SECONDS).doOnDispose(new Action()
             {
                 public void run() throws Exception
                 {
