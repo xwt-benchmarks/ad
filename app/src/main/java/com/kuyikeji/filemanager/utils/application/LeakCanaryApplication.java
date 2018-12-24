@@ -2,12 +2,14 @@ package com.kuyikeji.filemanager.utils.application;
 
 import android.support.multidex.MultiDexApplication;
 
+import com.koolib.activity.AdApp;
+
 /**
  * @author Emmanuel
  *         on 28/8/2017, at 18:12.
  */
 
-public class LeakCanaryApplication extends MultiDexApplication {
+public class LeakCanaryApplication extends AdApp {
 
     @Override
     public void onCreate() {

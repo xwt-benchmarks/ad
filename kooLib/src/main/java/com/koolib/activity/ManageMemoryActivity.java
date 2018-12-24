@@ -40,7 +40,7 @@ public class ManageMemoryActivity extends AppCompatActivity implements View.OnCl
         mManagememoryVersion = (TextView)findViewById(R.id.managememory_version);
         mManagememoryName.setText(null != getAppName() ? getAppName().trim() : "");
         if(mManagememoryName.getText().toString().trim().equals(""))
-            mManagememoryName.setText(null != getPackageName() ? getPackageName().trim() : "");
+        mManagememoryName.setText(null != getPackageName() ? getPackageName().trim() : "");
         if(null != getAppIconBitmap()) mManagememoryImg.setImageBitmap(getAppIconBitmap());
         mManagememoryVersion.setText(null != getAppVersion() ? getAppVersion().trim() : "");
         mManagememoryBtn.setOnClickListener(this);

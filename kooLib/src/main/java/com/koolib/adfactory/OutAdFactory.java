@@ -299,8 +299,8 @@ public class OutAdFactory
                 adTaskBean.setmVenderName("facebook");
             try
             {
-                mEffectiveAdIndex++;
                 mAdQueue.put(adTaskBean);
+                mEffectiveAdIndex++;
             }
             catch (InterruptedException e)
             {

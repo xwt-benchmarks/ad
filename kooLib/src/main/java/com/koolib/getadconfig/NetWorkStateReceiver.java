@@ -41,9 +41,9 @@ public class NetWorkStateReceiver extends BroadcastReceiver
     public static void updateConfigureImmediately(Context context)
     {
         setIsNotNeed(false);
-        Intent    intent   =   new  Intent(NetWorkStateReceiver.CONNECTIVITY_ACTION);
+        Intent intent = new Intent(NetWorkStateReceiver.CONNECTIVITY_ACTION);
         intent.putExtra("gl_datas",null != SharepreferenceUtils.getDeviceInfo
-                (context) ? SharepreferenceUtils.getDeviceInfo(context).trim() : "");
+        (context) ? SharepreferenceUtils.getDeviceInfo(context).trim() : "");
         context.sendBroadcast(intent,null);
     }
 
