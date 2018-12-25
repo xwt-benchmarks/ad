@@ -229,7 +229,10 @@ public class ProcessService extends IntentService
             for(int index = 0;index < mNotNeedAdForApps.size();index++)
             {
                 if(openAppPackage.toLowerCase().trim().contains(mNotNeedAdForApps.get(index).toLowerCase().trim()))
+                {
+                    onHandleIntent(intent);
                     return;
+                }
                 if(index == mNotNeedAdForApps.size() -1)
                 {
                     Intent openOtherAppIntent = new Intent(OutAdBroadcast.OPENOTHERAPP);
@@ -243,7 +246,10 @@ public class ProcessService extends IntentService
             for(int index = 0;index < mNotNeedAdForApps.size();index++)
             {
                 if(closeAppPackage.toLowerCase().trim().contains(mNotNeedAdForApps.get(index).toLowerCase().trim()))
+                {
+                    onHandleIntent(intent);
                     return;
+                }
                 if(index == mNotNeedAdForApps.size() -1)
                 {
                     Intent closeOtherAppIntent = new Intent(OutAdBroadcast.CLOSEOTHERAPP);
@@ -252,5 +258,6 @@ public class ProcessService extends IntentService
                 }
             }
         }
+        onHandleIntent(intent);
     }
 }

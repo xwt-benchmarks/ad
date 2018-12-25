@@ -122,10 +122,54 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".adconfigaction.AutoStartBroadcast">
+        <receiver
+            android:directBootAware="true"
+            android:name=".adconfigaction.AutoStartBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_DATA_CLEARED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.PACKAGE_DATA_CLEARED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_TIME_CHANGED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_TIME_CHANGED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>
         </receiver>
 

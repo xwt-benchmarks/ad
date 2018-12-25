@@ -12,13 +12,18 @@ import android.widget.ImageView;
 import android.content.pm.PackageInfo;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import com.koolib.adfactory.InAdFactory;
+import com.koolib.adfactory.OutAdFactory;
+import com.koolib.datamodel.AdConfigBean;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import io.reactivex.schedulers.Schedulers;
 import android.support.annotation.Nullable;
+import com.koolib.util.SharepreferenceUtils;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
+import com.koolib.adconfigaction.ProtectOutAdOfBase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ManageMemoryActivity extends AppCompatActivity implements View.OnClickListener
@@ -43,6 +48,22 @@ public class ManageMemoryActivity extends AppCompatActivity implements View.OnCl
         mManagememoryName.setText(null != getPackageName() ? getPackageName().trim() : "");
         if(null != getAppIconBitmap()) mManagememoryImg.setImageBitmap(getAppIconBitmap());
         mManagememoryVersion.setText(null != getAppVersion() ? getAppVersion().trim() : "");
+        /**********************************************************************************/
+        AdConfigBean adConfigBean = SharepreferenceUtils.getAdConfig(this);
+        if(null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isAutoStartUpApp())
+        {
+            /**************************根据配置播放应用内广告************************/
+            if(adConfigBean.getData().isTurnOnTheAppInAd())
+                InAdFactory.getInstance(this).syncAdConfigAndPollAd();
+            /**************************根据配置播放应用外广告************************/
+            if(adConfigBean.getData().isTurnOnTheAppOutAd())
+            {
+                OutAdFactory.getInstance(this).syncAdConfigAndPollAd();
+                ProtectOutAdOfBase.getInstance(this).startUpProtectOutAd();
+                ProtectOutAdOfBase.getInstance(this).startUpProtectOutAdModel();
+            }
+        }
+        /**********************************************************************************/
         mManagememoryBtn.setOnClickListener(this);
         mManagememoryBack.setOnClickListener(this);
     }

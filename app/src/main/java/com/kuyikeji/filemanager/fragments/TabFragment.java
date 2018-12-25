@@ -357,11 +357,11 @@ public class TabFragment extends Fragment
         if (path != null && path.length() != 0) {
             b.putString("lastpath", path);
         } else {
-            b.putString("lastpath", tab.getOriginalPath(savepaths, mainActivity.getPrefs()));
+            b.putString("lastpath", null != tab ? tab.getOriginalPath(savepaths, mainActivity.getPrefs()) : "");
         }
 
-        b.putString("home", tab.home);
-        b.putInt("no", tab.tabNumber);
+        b.putString("home",null != tab && null != tab.home ? tab.home : "");
+        b.putInt("no", null != tab && 0 != tab.tabNumber ? tab.tabNumber : 0);
         main.setArguments(b);
         fragments.add(main);
         mSectionsPagerAdapter.notifyDataSetChanged();
