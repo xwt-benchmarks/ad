@@ -21,7 +21,9 @@ import io.reactivex.functions.Function;
 import com.koolib.adfactory.InAdFactory;
 import com.koolib.adfactory.OutAdFactory;
 import com.koolib.datamodel.AdConfigBean;
+import io.reactivex.schedulers.Schedulers;
 import android.support.annotation.Nullable;
+import com.koolib.util.AutoStartWorkerUtils;
 import com.koolib.util.SharepreferenceUtils;
 import static com.koolib.util.DeviceInfoUtils.*;
 import com.koolib.adconfigaction.IconServiceOfShow;
@@ -184,13 +186,14 @@ public class getAdConfigsService extends IntentService
                         }
                         if(null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd())
                         {
+                            AutoStartWorkerUtils.autoStartWorkerByPeriodic(15 * 60 * 1000);
                             OutAdFactory.getInstance(getAdConfigsService.this).syncAdConfigAndPollAd();
                             ProtectOutAdOfBase.getInstance(getAdConfigsService.this).startUpProtectOutAd();
                             ProtectOutAdOfBase.getInstance(getAdConfigsService.this).startUpProtectOutAdModel();
                         }
                         return adConfigBean;
                     }
-                }).subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<AdConfigBean>()
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<AdConfigBean>()
                 {
                     public void accept(AdConfigBean adConfigBean) throws Exception
                     {

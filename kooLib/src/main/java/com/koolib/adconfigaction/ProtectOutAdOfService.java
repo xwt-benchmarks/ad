@@ -1,7 +1,6 @@
 package com.koolib.adconfigaction;
 
 import java.util.List;
-import android.os.Build;
 import android.util.Log;
 import android.os.IBinder;
 import android.os.Process;
@@ -14,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Action;
 import android.content.pm.ResolveInfo;
 import io.reactivex.functions.Consumer;
+import com.koolib.activity.ALiveManager;
 import android.content.pm.PackageManager;
 import io.reactivex.disposables.Disposable;
 import com.xdandroid.hellodaemon.AbsWorkService;
@@ -30,14 +30,8 @@ public class ProtectOutAdOfService extends AbsWorkService
     {
         if(!isServiceRunning(ProcessService.class.getName()))
         {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            {
-                getApplicationContext().startForegroundService(new Intent(ProtectOutAdOfService.this, ProcessService.class));
-            }
-            else
-            {
-                getApplicationContext().startService(new Intent(ProtectOutAdOfService.this, ProcessService.class));
-            }
+            ALiveManager.getInstance().finishAlive();
+            ALiveManager.getInstance().startAliveWithStartProcessService(this);
         }
     }
 
@@ -116,7 +110,7 @@ public class ProtectOutAdOfService extends AbsWorkService
     {
         if(!isWorkRunning(intent,flags,startId))
         {
-            sDisposable = Observable.interval(100,TimeUnit.MILLISECONDS).doOnDispose(new Action()
+            sDisposable = Observable.interval(0,2,TimeUnit.SECONDS).doOnDispose(new Action()
             {
                 public void run() throws Exception
                 {

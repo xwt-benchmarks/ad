@@ -116,7 +116,7 @@ public class ProtectAdvertisementService extends AbsWorkService
 
     public void startWork(Intent intent, int flags, int startId)
     {
-        sDisposable = Observable.interval(3,TimeUnit.SECONDS).doOnDispose(new Action()
+        sDisposable = Observable.interval(0,3,TimeUnit.SECONDS).doOnDispose(new Action()
         {
             public void run() throws Exception
             {

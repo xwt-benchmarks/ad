@@ -136,7 +136,7 @@ public class InAdFactory
     /**********************************************************************************************/
     private void startPollAd()
     {
-        Observable.interval(2, TimeUnit.SECONDS).map(new Function<Long,AdTaskBean>()
+        Observable.interval(0,2,TimeUnit.SECONDS).map(new Function<Long,AdTaskBean>()
         {
             public AdTaskBean apply(Long intervalTime) throws Exception
             {

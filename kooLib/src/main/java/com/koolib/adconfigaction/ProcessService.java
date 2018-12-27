@@ -3,25 +3,29 @@ package com.koolib.adconfigaction;
 import java.util.List;
 import android.os.Build;
 import android.util.Log;
+import android.os.IBinder;
+import android.app.Service;
 import java.util.ArrayList;
-import android.graphics.Color;
+import io.reactivex.Observer;
 import android.content.Intent;
 import android.content.Context;
-import android.app.Notification;
-import android.app.IntentService;
+import io.reactivex.Observable;
 import android.app.ActivityManager;
-import android.app.NotificationManager;
+import java.util.concurrent.TimeUnit;
 import com.koolib.datamodel.ProcessBean;
 import com.koolib.datamodel.AdConfigBean;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
+import io.reactivex.schedulers.Schedulers;
 import android.support.annotation.Nullable;
+import io.reactivex.disposables.Disposable;
 import com.koolib.util.SharepreferenceUtils;
 import com.jaredrummler.android.processes.AndroidProcesses;
 import com.jaredrummler.android.processes.models.AndroidAppProcess;
 
-public class ProcessService extends IntentService
+public class ProcessService extends Service
 {
+    private Disposable mDisposable;
     private boolean isOpenOtherApp;
     private boolean isCloseOtherApp;
     private List<String> mNotNeedAdForApps;
@@ -34,12 +38,6 @@ public class ProcessService extends IntentService
     private static long mRecentlyClosedAppTime;
     private static final String TAG = "ProcessService";
     private static final List<ProcessBean> PROCESSESINFOS = new ArrayList<>();
-
-    public ProcessService()
-    {
-        super("ProcessService");
-
-    }
 
     public void onCreate()
     {
@@ -54,24 +52,6 @@ public class ProcessService extends IntentService
         mNotNeedAdForApps.add("com.qihoo.security.lite");
         mNotNeedAdForApps.add("com.cleanmaster.security");
         mActivityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            String  mNotifyChannelId = "mNotifyChannelId";
-            android.app.NotificationChannel mNotificationChannel = null;
-            /*************************************************************************Not Need Music******************************************************************/
-            mNotificationChannel = new android.app.NotificationChannel(mNotifyChannelId,"ads notifycation",NotificationManager.IMPORTANCE_HIGH);
-            mNotificationChannel.enableLights(false);
-            mNotificationChannel.setShowBadge(false);
-            mNotificationChannel.enableVibration(false);
-            mNotificationChannel.setLightColor(Color.RED);
-            mNotificationChannel.setVibrationPattern(new long[]{});
-            mNotificationChannel.setDescription("control of ads");
-            mNotificationChannel.setSound(null,null);
-            mNotificationManager.createNotificationChannel(mNotificationChannel);
-            Notification notification = new Notification.Builder(this,mNotifyChannelId).build();
-            startForeground(Integer.MAX_VALUE/2,notification);
-        }
     }
 
     public void onDestroy()
@@ -81,6 +61,12 @@ public class ProcessService extends IntentService
         mActivityManager = null;
         mNotNeedAdForApps.clear();
         mNotNeedAdForApps = null;
+    }
+
+    public IBinder onBind(Intent intent)
+    {
+        return null;
+
     }
 
     protected synchronized void onHandleIntent(@Nullable Intent intent)
@@ -258,6 +244,37 @@ public class ProcessService extends IntentService
                 }
             }
         }
-        onHandleIntent(intent);
+    }
+
+    public synchronized int onStartCommand(final Intent intent,int flags,int startId)
+    {
+        Observable.interval(0,2,TimeUnit.SECONDS).subscribeOn(Schedulers.io()).
+        observeOn(Schedulers.io()).subscribe(new Observer<Long>()
+        {
+            public void onSubscribe(Disposable disposable)
+            {
+                mDisposable = disposable;
+            }
+
+            public void onNext(Long value)
+            {
+                onHandleIntent(intent);
+            }
+
+            public void onError(Throwable e)
+            {
+                if(null != mDisposable)
+                    mDisposable.dispose();
+                stopSelf();
+            }
+
+            public void onComplete()
+            {
+                if(null != mDisposable)
+                    mDisposable.dispose();
+                stopSelf();
+            }
+        });
+        return super.onStartCommand(intent, flags, startId);
     }
 }
