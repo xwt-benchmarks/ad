@@ -1,0 +1,116 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/dialog_utils_root">
+
+    <LinearLayout
+        android:background="@drawable/shape_rect_round_wihte_white"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="40dp">
+
+        <TextView
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/dialog_utils_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="我是标题"/>
+
+        <View
+            android:id="@+id/dialog_utils_title_line"
+            android:layout_width="match_parent"
+            android:background="@color/line"
+            android:layout_height="1dp"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="14dp">
+
+            <ImageView
+                android:id="@+id/dialog_utils_icon"
+                android:layout_marginBottom="10dp"
+                android:layout_height="50dp"
+                android:layout_width="50dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:textColor="@color/black_txt"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/dialog_utils_msg"
+                android:gravity="center_vertical"
+                android:minHeight="40dp"
+                android:textSize="15sp"
+                android:text="正文"/>
+
+            <EditText
+                android:background="@drawable/shap_rect_round_trans_white"
+                android:textColor="@color/green_txt"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/dialog_utils_edt"
+                android:inputType="numberPassword"
+                android:paddingBottom="5dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:visibility="gone"
+                android:hint="发现新版本"
+                android:paddingTop="5dp"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/line"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/dialog_utils_cancel"
+                android:layout_height="match_parent"
+                android:textColor="@color/gray_txt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:text="Cancel"
+                android:maxLines="1"/>
+
+            <View
+                android:id="@+id/dialog_utils_line_button"
+                android:layout_height="match_parent"
+                android:background="@color/line"
+                android:layout_width="1dp"/>
+
+            <TextView
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_height="match_parent"
+                android:id="@+id/dialog_utils_sure"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="Confirm"
+                android:maxLines="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

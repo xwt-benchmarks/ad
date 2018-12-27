@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.graphics.PixelFormat;
 import com.koolib.adconfigaction.ProcessService;
 
+
 public class AliveActivity extends Activity
 {
     public static final String IS_START_PROCESS_SERVICE = "is_start_process_service";
