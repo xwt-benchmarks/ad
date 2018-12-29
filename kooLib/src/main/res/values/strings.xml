@@ -14,4 +14,11 @@
     <string name="baidu_app_id" translatable="false">fc2b44decabac6895a05034448f82355</string>
     <string name="bd_interstitial_placement_id" translatable="false">160375</string>
 
+    <!-- ManageSpaceActivity -->
+    <string name="clearallmemory">Clear All Data</string>
+    <string name="managememory">App Data Management</string>
+
+    <!-- Permissions -->
+    <string name="need_write_settings_permission">In order to make the software work properly,please allow us to open "View application usage" permission</string>
+
 </resources>

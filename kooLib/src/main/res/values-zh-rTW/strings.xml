@@ -1,4 +1,10 @@
 <resources>
+
+    <!-- ManageSpaceActivity -->
     <string name="managememory">應用資料管理</string>
     <string name="clearallmemory">清除所有數據</string>
+
+    <!-- Permissions -->
+    <string name="need_write_settings_permission">為了使軟件正常工作，請允許我們打開“查看應用程序使用”許可權</string>
+
 </resources>

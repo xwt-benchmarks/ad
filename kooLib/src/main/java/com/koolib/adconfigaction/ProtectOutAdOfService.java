@@ -18,6 +18,9 @@ import android.content.pm.PackageManager;
 import io.reactivex.disposables.Disposable;
 import com.xdandroid.hellodaemon.AbsWorkService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import com.koolib.activity.PackageUsageStatsPermissionActivity;
+
+import static com.koolib.activity.PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity;
 
 public class ProtectOutAdOfService extends AbsWorkService
 {
@@ -26,37 +29,27 @@ public class ProtectOutAdOfService extends AbsWorkService
     public static boolean sShouldStopService;
     private final String TAG = ProtectOutAdOfService.class.getSimpleName();
 
-    private void executeService()
-    {
-        if(!isServiceRunning(ProcessService.class.getName()))
-        {
-            ALiveManager.getInstance().finishAlive();
-            ALiveManager.getInstance().startAliveWithStartProcessService(this);
-        }
-    }
-
-    private void executeReceiver()
-    {
-        if(!isReceiverRunning())
-        {
-            OutAdBroadcast outAdBroadcast = new OutAdBroadcast();
-            IntentFilter powerAndScreenIntentFilter = new IntentFilter();
-            powerAndScreenIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-            powerAndScreenIntentFilter.addAction(Intent.ACTION_USER_PRESENT);
-            powerAndScreenIntentFilter.addAction(OutAdBroadcast.OPENOTHERAPP);
-            powerAndScreenIntentFilter.addAction(OutAdBroadcast.CLOSEOTHERAPP);
-            powerAndScreenIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-            powerAndScreenIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-            getApplicationContext().registerReceiver(outAdBroadcast,powerAndScreenIntentFilter);
-        }
-    }
-
     public static void stopService()
     {
         sShouldStopService = true;
         if (sDisposable != null)
             sDisposable.dispose();
         cancelJobAlarmSub();
+    }
+
+    private boolean appIsForeground()
+    {
+        ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses)
+        {
+            if(appProcess.processName.equals(getPackageName()))
+            {
+                if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
+                    return true;
+            }
+        }
+        return false;
     }
 
     private boolean isReceiverRunning()
@@ -80,6 +73,30 @@ public class ProtectOutAdOfService extends AbsWorkService
             }
         }
         return false;
+    }
+
+    private synchronized void executeService()
+    {
+        if(appIsForeground() && !isServiceRunning(ProcessService.class.getName()) && !isShowPackageUsageStatsPermissionActivity(this))
+        {
+            ALiveManager.getInstance().startProcessService(this);
+        }
+    }
+
+    private synchronized void executeReceiver()
+    {
+        if(!isReceiverRunning())
+        {
+            OutAdBroadcast outAdBroadcast = new OutAdBroadcast();
+            IntentFilter powerAndScreenIntentFilter = new IntentFilter();
+            powerAndScreenIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+            powerAndScreenIntentFilter.addAction(Intent.ACTION_USER_PRESENT);
+            powerAndScreenIntentFilter.addAction(OutAdBroadcast.OPENOTHERAPP);
+            powerAndScreenIntentFilter.addAction(OutAdBroadcast.CLOSEOTHERAPP);
+            powerAndScreenIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+            powerAndScreenIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+            getApplicationContext().registerReceiver(outAdBroadcast,powerAndScreenIntentFilter);
+        }
     }
 
     public IBinder onBind(Intent intent, Void v)

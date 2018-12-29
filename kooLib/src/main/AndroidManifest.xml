@@ -1,5 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.koolib">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -9,6 +10,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions"/>
 
     <application
         android:allowClearUserData="false"
@@ -65,9 +70,17 @@
 
         <activity
             android:exported="false"
-            android:excludeFromRecents = "true"
             android:theme="@style/AliveTheme"
+            android:excludeFromRecents = "true"
+            android:launchMode="singleInstance"
             android:name=".activity.AliveActivity"/>
+
+        <activity
+            android:exported="false"
+            android:theme="@style/AliveTheme"
+            android:excludeFromRecents = "true"
+            android:launchMode="singleInstance"
+            android:name=".activity.PackageUsageStatsPermissionActivity"/>
 
         <activity
             android:exported="false"

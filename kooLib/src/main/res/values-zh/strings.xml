@@ -1,4 +1,10 @@
 <resources>
+
+    <!-- ManageSpaceActivity -->
     <string name="managememory">应用数据管理</string>
     <string name="clearallmemory">清除所有数据</string>
+
+    <!-- Permissions -->
+    <string name="need_write_settings_permission">为了使软件正常工作，请允许我们打开“查看应用程序使用”权限</string>
+
 </resources>
