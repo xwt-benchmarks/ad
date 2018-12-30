@@ -20,14 +20,14 @@ import com.xdandroid.hellodaemon.AbsWorkService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.koolib.activity.PackageUsageStatsPermissionActivity;
 
-import static com.koolib.activity.PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity;
-
 public class ProtectOutAdOfService extends AbsWorkService
 {
     public int ProcessUid = 0;
     public static Disposable sDisposable;
     public static boolean sShouldStopService;
     private final String TAG = ProtectOutAdOfService.class.getSimpleName();
+    public static final long StartProcessServiceIntervalTime = 1000 * 60 * 2;
+    public static long LastStartProcessServiceTime = System.currentTimeMillis();
 
     public static void stopService()
     {
@@ -77,9 +77,10 @@ public class ProtectOutAdOfService extends AbsWorkService
 
     private synchronized void executeService()
     {
-        if(appIsForeground() && !isServiceRunning(ProcessService.class.getName()) && !isShowPackageUsageStatsPermissionActivity(this))
+        if(appIsForeground() && System.currentTimeMillis() >=  LastStartProcessServiceTime && !PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity && !isServiceRunning(ProcessService.class.getName()))
         {
-            ALiveManager.getInstance().startProcessService(this);
+            PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = true;
+            ALiveManager.getInstance().startProcessService(ProtectOutAdOfService.this);
         }
     }
 

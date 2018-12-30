@@ -1,13 +1,10 @@
 package com.koolib.activity;
 
 import com.koolib.R;
-
-import android.app.ActivityManager;
-import android.content.ComponentName;
+import java.util.List;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Dialog;
-import android.util.Log;
 import android.view.Window;
 import android.view.Gravity;
 import android.app.Activity;
@@ -18,22 +15,24 @@ import android.app.AppOpsManager;
 import android.view.WindowManager;
 import com.koolib.util.DialogUtils;
 import com.koolib.util.StringUtils;
+import android.app.ActivityManager;
 import android.graphics.PixelFormat;
+import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
 import com.koolib.adconfigaction.ProcessService;
-
-import java.util.List;
+import com.koolib.adconfigaction.ProtectOutAdOfService;
 
 public class PackageUsageStatsPermissionActivity extends Activity
 {
+    public static boolean isShowPackageUsageStatsPermissionActivity = false;
     public static final int StartPackageUsageStatsPermissionActivity = 0x0001;
-    public static final long RequestPackageUsageStatsPermissionIntervalTime = 1000 * 20 * 1;
-    public static long LastRequestPackageUsageStatsPermissionTime = System.currentTimeMillis();
 
     public void startProcessService()
     {
+        ProtectOutAdOfService.LastStartProcessServiceTime = System.currentTimeMillis() + ProtectOutAdOfService.StartProcessServiceIntervalTime;
         startService(new Intent(this,ProcessService.class));
+        isShowPackageUsageStatsPermissionActivity = false;
         finish();
     }
 
@@ -64,21 +63,18 @@ public class PackageUsageStatsPermissionActivity extends Activity
     {
         if(isHavedPackageUsageStatsPermissionActivity() && !isHavedPackageUsageStatsPermission())
         {
-            if(System.currentTimeMillis() >= LastRequestPackageUsageStatsPermissionTime)
+            DialogUtils.getInstance(this, false, false).showNoticeWithOnebtn(
+            getString(R.string.need_write_settings_permission),new DialogUtils.SureClick()
             {
-                LastRequestPackageUsageStatsPermissionTime +=
-                RequestPackageUsageStatsPermissionIntervalTime;
-                DialogUtils.getInstance(this, false, false).showNoticeWithOnebtn(
-                getString(R.string.need_write_settings_permission),new DialogUtils.SureClick()
+                public synchronized void OnSureClick(String result,Dialog dialog)
                 {
-                    public synchronized void OnSureClick(String result,Dialog dialog)
-                    {
-                        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                        startActivityForResult(intent,StartPackageUsageStatsPermissionActivity);
-                        dialog.dismiss();
-                    }
-                });
-            }
+                    ProtectOutAdOfService.LastStartProcessServiceTime = System.currentTimeMillis() + ProtectOutAdOfService.StartProcessServiceIntervalTime;
+                    /****/Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    startActivityForResult(intent,StartPackageUsageStatsPermissionActivity);
+                    isShowPackageUsageStatsPermissionActivity = false;
+                    dialog.dismiss();
+                }
+            });
         }
         else if(isHavedPackageUsageStatsPermissionActivity() && isHavedPackageUsageStatsPermission())
         {
@@ -129,16 +125,20 @@ public class PackageUsageStatsPermissionActivity extends Activity
             }
             else
             {
+                ProtectOutAdOfService.LastStartProcessServiceTime = System.currentTimeMillis() + ProtectOutAdOfService.StartProcessServiceIntervalTime;
+                isShowPackageUsageStatsPermissionActivity = false;
                 finish();
             }
         }
         else
         {
+            ProtectOutAdOfService.LastStartProcessServiceTime = System.currentTimeMillis() + ProtectOutAdOfService.StartProcessServiceIntervalTime;
+            isShowPackageUsageStatsPermissionActivity = false;
             finish();
         }
     }
 
-    public static final boolean isShowPackageUsageStatsPermissionActivity(Context context)
+    public static boolean isShowPackageUsageStatsPermissionActivity(Context context)
     {
         if (context == null) return false;
         ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -146,8 +146,6 @@ public class PackageUsageStatsPermissionActivity extends Activity
         if (list != null && list.size() > 0)
         {
             ComponentName componentName = list.get(0).topActivity;
-            Log.i("iii", PackageUsageStatsPermissionActivity.class.getName());
-            Log.i("iii", componentName.getClassName());
             if (PackageUsageStatsPermissionActivity.class.getName().equals(componentName.getClassName()))
                 return true;
         }

@@ -48,7 +48,7 @@ public class ALiveManager
         context.startActivity(intent);
     }
 
-    public synchronized void startProcessService(Context context)
+    public void startProcessService(Context context)
     {
         Intent intent = new Intent(context,PackageUsageStatsPermissionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

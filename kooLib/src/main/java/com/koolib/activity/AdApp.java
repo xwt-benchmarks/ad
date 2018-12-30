@@ -13,6 +13,9 @@ import android.app.ActivityManager;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import android.support.multidex.MultiDex;
+
+import com.koolib.adconfigaction.ProtectOutAdOfService;
+
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -78,6 +81,8 @@ public class AdApp extends Application
                             mIntent.addCategory(Intent.CATEGORY_HOME);
                             mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             /**********/startActivity(mIntent);/***********/
+                            PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = false;
+                            ProtectOutAdOfService.LastStartProcessServiceTime = System.currentTimeMillis() + ProtectOutAdOfService.StartProcessServiceIntervalTime;
                         }/***********************end***********************/
                     }
                 });
@@ -103,6 +108,10 @@ public class AdApp extends Application
                 if(appProcess.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND)
                     return AppIsBackground;
                 else if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_SERVICE)
+                    return AppIsBackground;
+                else if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_PERCEPTIBLE)
+                    return AppIsBackground;
+                else if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_PERCEPTIBLE_PRE_26)
                     return AppIsBackground;
                 else
                     return AppIsForeground;
