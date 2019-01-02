@@ -13,10 +13,8 @@ import android.app.ActivityManager;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import android.support.multidex.MultiDex;
-
-import com.koolib.adconfigaction.ProtectOutAdOfService;
-
 import io.reactivex.schedulers.Schedulers;
+import com.koolib.adconfigaction.ProtectOutAdOfService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AdApp extends Application

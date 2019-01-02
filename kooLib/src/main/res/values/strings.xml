@@ -1,8 +1,12 @@
 <resources>
 
-    <!-- Google广告配置 -->
+   <!-- &lt;!&ndash; Google广告配置 &ndash;&gt;
     <string name="google_app_id" translatable="false">ca-app-pub-9635419207113422~2468609534</string>
-    <string name="gg_interstitial_placement_id" translatable="false">ca-app-pub-9635419207113422/8199383098</string>
+    <string name="gg_interstitial_placement_id" translatable="false">ca-app-pub-9635419207113422/8199383098</string>-->
+
+    <!-- Google广告配置 -->
+    <string name="google_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="gg_interstitial_placement_id" translatable="false">ca-app-pub-8624324609345348/5453072272</string>
 
     <!-- Facebook广告配置 -->
     <string name="facebook_app_id" translatable="false">260510654592833</string>

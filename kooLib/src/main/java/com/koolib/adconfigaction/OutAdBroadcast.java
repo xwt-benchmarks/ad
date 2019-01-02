@@ -11,9 +11,8 @@ import com.koolib.util.SharepreferenceUtils;
 public class OutAdBroadcast extends BroadcastReceiver
 {
     private AdConfigBean mAdConfigBean = null;
-    public static final String OPENOTHERAPP = "OpenOtherApp";
-    public static final String CLOSEOTHERAPP = "CloseOtherApp";
     private static long mStartUpTime = System.currentTimeMillis();
+    public static final String OPERATEOTHERAPP = "OperateOtherApp";
     private static long mNextTimeForCanAddAd = System.currentTimeMillis();
 
     public void onReceive(Context context, Intent intent)
@@ -28,13 +27,13 @@ public class OutAdBroadcast extends BroadcastReceiver
                 String action = intent.getAction();
                 switch(action)
                 {
-                    case OPENOTHERAPP:
-                    case CLOSEOTHERAPP:
+                    case OPERATEOTHERAPP:
                     case Intent.ACTION_SCREEN_OFF:
                     case Intent.ACTION_USER_PRESENT:
                     case Intent.ACTION_POWER_CONNECTED:
                     case Intent.ACTION_POWER_DISCONNECTED:
                     {
+                        ALiveManager.getInstance().finishAlive();
                         ALiveManager.getInstance().startAlive(context);
                         mNextTimeForCanAddAd = System.currentTimeMillis() +
                         mAdConfigBean.getData().getAppOutAdPlayInterval() * 1000;

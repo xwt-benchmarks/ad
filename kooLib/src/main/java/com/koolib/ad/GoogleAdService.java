@@ -65,7 +65,7 @@ public class GoogleAdService extends Service
             {
                 if(null != mOutAdListener)
                     mOutAdListener.onAdStarted("Google");
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
             }
         }
         else
@@ -75,7 +75,7 @@ public class GoogleAdService extends Service
             {
                 if(null != mInAdListener)
                     mInAdListener.onAdStarted("Google");
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -240,7 +240,7 @@ public class GoogleAdService extends Service
                 {
                     public void accept(String notrStr) throws Exception
                     {
-                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
                         /********************************tryOnAdEnd********************************/
                     }
                 });
@@ -265,7 +265,7 @@ public class GoogleAdService extends Service
                 {
                     public void accept(String notrStr) throws Exception
                     {
-                        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
                         /********************************tryOnAdEnd********************************/
                     }
                 });

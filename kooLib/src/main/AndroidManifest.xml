@@ -125,8 +125,7 @@
 
         <receiver android:name=".adconfigaction.OutAdBroadcast">
             <intent-filter>
-                <action android:name="OpenOtherApp"/>
-                <action android:name="CloseOtherApp"/>
+                <action android:name="OperateOtherApp"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.SCREEN_OFF"/>
                 <action android:name="android.intent.action.USER_PRESENT"/>

@@ -55,7 +55,7 @@ public class ProtectOutAdOfService extends AbsWorkService
     private boolean isReceiverRunning()
     {
         Intent intent = new Intent();
-        intent.setAction(OutAdBroadcast.OPENOTHERAPP);
+        intent.setAction(OutAdBroadcast.OPERATEOTHERAPP);
         PackageManager packageManager = getPackageManager();
         List<ResolveInfo> resolveInfos = packageManager.queryBroadcastReceivers(intent, 0);
         if(resolveInfos != null)
@@ -92,9 +92,8 @@ public class ProtectOutAdOfService extends AbsWorkService
             IntentFilter powerAndScreenIntentFilter = new IntentFilter();
             powerAndScreenIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
             powerAndScreenIntentFilter.addAction(Intent.ACTION_USER_PRESENT);
-            powerAndScreenIntentFilter.addAction(OutAdBroadcast.OPENOTHERAPP);
-            powerAndScreenIntentFilter.addAction(OutAdBroadcast.CLOSEOTHERAPP);
             powerAndScreenIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+            powerAndScreenIntentFilter.addAction(OutAdBroadcast.OPERATEOTHERAPP);
             powerAndScreenIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
             getApplicationContext().registerReceiver(outAdBroadcast,powerAndScreenIntentFilter);
         }
