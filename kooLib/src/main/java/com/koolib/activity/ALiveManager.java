@@ -41,16 +41,17 @@ public class ALiveManager
 
     }
 
-    public void startAlive(Context context)
+    public void startProcessService(Context context)
     {
-        Intent intent = new Intent(context,AliveActivity.class);
+        Intent intent = new Intent(context,PackageUsageStatsPermissionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
-    public void startProcessService(Context context)
+    public void startAlive(Context context,String outAdBroadcastType)
     {
-        Intent intent = new Intent(context,PackageUsageStatsPermissionActivity.class);
+        /*****/Intent intent = new Intent(context,AliveActivity.class);/****/
+        intent.putExtra(AliveActivity.OutAdBroadcastType,outAdBroadcastType);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

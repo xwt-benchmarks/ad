@@ -26,14 +26,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class OutAdFactory
 {
-    private Context mContext;
+    private static Context mContext;
     private OutAdListener mOutAdListener;
     private volatile boolean mIsPlayNextAd;
     private volatile boolean mIsStartPollAd;
     private volatile static OutAdFactory mInstance;
     private int mEffectiveAdIndex;//当前播放广告所属厂商的下标
     private List<String> mEffectiveAdVenders;//可以播放广告的厂商
-    /***********************************************************/
+    /**********************************************************/
     private AdConfigBean mAdConfigBean;
     private BlockingQueue<AdTaskBean> mAdQueue;
     private int mPlayedAdTotalNum;//已经播放过的广告数量
@@ -54,6 +54,7 @@ public class OutAdFactory
                 }
             }
         }
+        mContext = context;
         return mInstance;
     }
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.Context;
 import com.koolib.activity.ALiveManager;
 import android.content.BroadcastReceiver;
-import com.koolib.adfactory.OutAdFactory;
 import com.koolib.datamodel.AdConfigBean;
 import com.koolib.util.SharepreferenceUtils;
 
@@ -34,15 +33,9 @@ public class OutAdBroadcast extends BroadcastReceiver
                     case Intent.ACTION_POWER_DISCONNECTED:
                     {
                         ALiveManager.getInstance().finishAlive();
-                        ALiveManager.getInstance().startAlive(context);
-                        mNextTimeForCanAddAd = System.currentTimeMillis() +
+                        ALiveManager.getInstance().startAlive(context,action);
+                        mNextTimeForCanAddAd   =  System.currentTimeMillis() +
                         mAdConfigBean.getData().getAppOutAdPlayInterval() * 1000;
-                        OutAdFactory.getInstance(context).syncAdConfigAndPollAd();
-                        if(action == Intent.ACTION_SCREEN_OFF)
-                            OutAdFactory.getInstance(context).addAd(true,mAdConfigBean.getData().getAdBeans().size());
-                        else
-                            OutAdFactory.getInstance(context).addAd(false,mAdConfigBean.getData().getAdBeans().size());
-                        /*************************/ALiveManager.getInstance().finishAlive();/*************************/
                         break;
                     }
                 }

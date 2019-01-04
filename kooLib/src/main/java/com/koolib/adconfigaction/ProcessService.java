@@ -77,7 +77,7 @@ public class ProcessService extends Service
             String topAppPackageName = "";
             UsageEvents.Event event = new UsageEvents.Event();
             if(null == mUsageStatsManager) mUsageStatsManager = (UsageStatsManager)getSystemService(Context.USAGE_STATS_SERVICE);
-            UsageEvents usageEvents = mUsageStatsManager.queryEvents(System.currentTimeMillis() - 6000,System.currentTimeMillis());
+            UsageEvents usageEvents = mUsageStatsManager.queryEvents(System.currentTimeMillis() - 3000,System.currentTimeMillis());
             while(usageEvents.hasNextEvent())
             {
                 usageEvents.getNextEvent(event);
