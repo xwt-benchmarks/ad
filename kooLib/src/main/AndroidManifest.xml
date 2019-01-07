@@ -197,6 +197,13 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".adconfigaction.SwitchApplicationBroadcast">
+            <intent-filter>
+                <action android:name="ACTION_CLOSE_SYSTEM_DIALOGSE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name="com.duapps.ad.stats.DuAdCacheProvider"
             android:authorities="${applicationId}.DuAdCacheProvider"

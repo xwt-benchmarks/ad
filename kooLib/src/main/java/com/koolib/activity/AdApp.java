@@ -26,7 +26,7 @@ public class AdApp extends Application
     {
         super.onCreate();
         MultiDex.install(this);
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
+        /*registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
             public void onActivityCreated(final Activity activity, Bundle savedInstanceState)
             {
@@ -78,14 +78,14 @@ public class AdApp extends Application
                             mIntent.setAction(Intent.ACTION_MAIN);
                             mIntent.addCategory(Intent.CATEGORY_HOME);
                             mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            /**********/startActivity(mIntent);/***********/
+                            *//**********//*startActivity(mIntent);*//***********//*
                             PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = false;
                             ProtectOutAdOfService.LastStartProcessServiceTime = System.currentTimeMillis() + ProtectOutAdOfService.StartProcessServiceIntervalTime;
-                        }/***********************end***********************/
+                        }*//***********************end***********************//*
                     }
                 });
             }
-        });
+        });*/
     }
 
     private static boolean isScreenOn(final Activity activity)

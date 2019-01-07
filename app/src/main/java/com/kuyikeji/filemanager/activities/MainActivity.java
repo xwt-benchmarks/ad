@@ -67,6 +67,7 @@ import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.InterstitialAdActivity;
+import com.koolib.adconfigaction.SwitchApplicationBroadcast;
 import com.koolib.adfactory.InAdFactory;
 import com.koolib.getadconfig.getAdConfigsService;
 import com.koolib.util.SharepreferenceUtils;
@@ -294,7 +295,7 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
     private ImageView mAdCanCel;
     private RelativeLayout mAdRelativeLayout;
     /*****************************************************************************/
-
+    private SwitchApplicationBroadcast switchApplicationBroadcast;
 
     /**
      * Called when the activity is first created.
@@ -514,6 +515,9 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
                 InAdFactory.getInstance(MainActivity.this).addAd();
             }
         });
+        switchApplicationBroadcast = new SwitchApplicationBroadcast();
+        IntentFilter intentFilter1 = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        registerReceiver(switchApplicationBroadcast,intentFilter1);
     }
 
     @JavascriptInterface
@@ -1304,6 +1308,8 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
         SshConnectionPool.getInstance().expungeAllConnections();
         if(null != mNetWorkStateReceiver)
             unregisterReceiver(mNetWorkStateReceiver);
+        if(null != switchApplicationBroadcast)
+            unregisterReceiver(switchApplicationBroadcast);
     }
 
     /**
