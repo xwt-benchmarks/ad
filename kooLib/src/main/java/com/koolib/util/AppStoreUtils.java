@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.content.Context;
 
-/**********为当前应用跳转到指定应用市场的下载页面*********/
+/*********为当前应用跳转到指定应用市场的下载页面********/
 public class AppStoreUtils
 {
     public static void goGoogleAppStore(Context context)

@@ -1,7 +1,6 @@
 package com.koolib.activity;
 
 import com.koolib.R;
-import java.util.List;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Dialog;
@@ -15,9 +14,7 @@ import android.app.AppOpsManager;
 import android.view.WindowManager;
 import com.koolib.util.DialogUtils;
 import com.koolib.util.StringUtils;
-import android.app.ActivityManager;
 import android.graphics.PixelFormat;
-import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
 import com.koolib.adconfigaction.ProcessService;
@@ -136,19 +133,5 @@ public class PackageUsageStatsPermissionActivity extends Activity
             isShowPackageUsageStatsPermissionActivity = false;
             finish();
         }
-    }
-
-    public static boolean isShowPackageUsageStatsPermissionActivity(Context context)
-    {
-        if (context == null) return false;
-        ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> list = activityManager.getRunningTasks(1);
-        if (list != null && list.size() > 0)
-        {
-            ComponentName componentName = list.get(0).topActivity;
-            if (PackageUsageStatsPermissionActivity.class.getName().equals(componentName.getClassName()))
-                return true;
-        }
-        return false;
     }
 }
