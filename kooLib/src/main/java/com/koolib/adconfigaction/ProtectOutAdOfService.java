@@ -11,11 +11,15 @@ import android.app.ActivityManager;
 import android.content.IntentFilter;
 import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Action;
+import android.content.ComponentName;
 import android.content.pm.ResolveInfo;
 import io.reactivex.functions.Consumer;
 import com.koolib.activity.ALiveManager;
 import android.content.pm.PackageManager;
 import io.reactivex.disposables.Disposable;
+import com.duapps.ad.InterstitialAdActivity;
+import com.google.android.gms.ads.AdActivity;
+import com.facebook.ads.AudienceNetworkActivity;
 import com.xdandroid.hellodaemon.AbsWorkService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.koolib.activity.PackageUsageStatsPermissionActivity;
@@ -52,6 +56,18 @@ public class ProtectOutAdOfService extends AbsWorkService
             }
         }
         return false;
+    }
+
+    private boolean isItJustAppItself()
+    {
+        ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
+        ComponentName componentName = activityManager.getRunningTasks(1).get(0).topActivity;
+        if(!componentName.getClassName().trim().contains(AdActivity.class.getSimpleName().trim())||
+        !componentName.getClassName().trim().contains(InterstitialAdActivity.class.getSimpleName().trim())||
+        !componentName.getClassName().trim().contains(AudienceNetworkActivity.class.getSimpleName().trim()))
+            return true;
+        else
+            return false;
     }
 
     public IBinder onBind(Intent intent, Void v)
@@ -158,7 +174,8 @@ public class ProtectOutAdOfService extends AbsWorkService
 
     private synchronized void executeService()
     {
-        if(appIsForeground() && System.currentTimeMillis() >= LastStartProcessServiceTime && !PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity && !isServiceRunning(ProcessService.class.getName()))
+        if(appIsForeground() && isItJustAppItself() && System.currentTimeMillis() >= LastStartProcessServiceTime &&
+        !PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity && !isServiceRunning(ProcessService.class.getName()))
         {
             PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = true;
             ALiveManager.getInstance().startProcessService(ProtectOutAdOfService.this);

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.Context;
 import io.reactivex.Observable;
 import com.koolib.util.StringUtils;
+import com.koolib.util.AppInfoUtils;
 import java.util.concurrent.TimeUnit;
 import android.app.usage.UsageEvents;
 import com.koolib.datamodel.AdConfigBean;
@@ -107,9 +108,10 @@ public class ProcessService extends Service
             {
                 Log.i(TAG, "mLateTopAppPackageName:" + mLateTopAppPackageName);
                 Log.i(TAG, "getTopAppPackageName():" + getTopAppPackageName());
-                if(!getTopAppPackageName().equals("") &&
+                if(!getTopAppPackageName().trim().equals("") &&
                    !getTopAppPackageName().toLowerCase().trim().equals(getPackageName()) &&
                    !getTopAppPackageName().toLowerCase().trim().equals(mLateTopAppPackageName) &&
+                   !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
                     null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd())
                 {
                     Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
