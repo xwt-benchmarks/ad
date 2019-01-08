@@ -17,6 +17,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.koolib.util.SharepreferenceUtils;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdActivity;
 import com.google.android.gms.ads.InterstitialAd;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -30,6 +31,7 @@ public class GoogleAdService extends Service
     private InterstitialAd mInterstitialAd;
     private boolean mIsExtinguishingScreen;
     private int mResidualRetryNumberOfVender;
+    public static boolean isHavedAdResourece;
     private static InAdListener mInAdListener;
     private GoogleAdListener mGoogleAdListener;
     private static OutAdListener mOutAdListener;
@@ -65,7 +67,16 @@ public class GoogleAdService extends Service
             {
                 if(null != mOutAdListener)
                     mOutAdListener.onAdStarted("Google");
-                mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
+                if(isHavedAdResourece)
+                {
+                    Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
+                    intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentt);
+                }
+                else
+                {
+                    mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
+                }
             }
         }
         else
@@ -75,7 +86,16 @@ public class GoogleAdService extends Service
             {
                 if(null != mInAdListener)
                     mInAdListener.onAdStarted("Google");
-                mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
+                if(isHavedAdResourece)
+                {
+                    Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
+                    intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentt);
+                }
+                else
+                {
+                    mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
+                }
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -141,12 +161,14 @@ public class GoogleAdService extends Service
             if(mIsOutAdType && null != mOutAdListener)
             {
                 mInterstitialAd.show();
+                isHavedAdResourece = true;
                 mOutAdListener.onAdLoaded("Google");
                 mOutAdListener.onAdShowing("Google");
             }
             else if(!mIsOutAdType && null != mInAdListener)
             {
                 mInterstitialAd.show();
+                isHavedAdResourece = true;
                 mInAdListener.onAdLoaded("Google");
                 mInAdListener.onAdShowing("Google");
             }
@@ -240,8 +262,16 @@ public class GoogleAdService extends Service
                 {
                     public void accept(String notrStr) throws Exception
                     {
-                        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
-                        /********************************tryOnAdEnd********************************/
+                        if(isHavedAdResourece)
+                        {
+                            Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
+                            intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentt);
+                        }
+                        else
+                        {
+                            mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
+                        }/********************************tryOnAdEnd*******************************/
                     }
                 });
             }
@@ -265,8 +295,16 @@ public class GoogleAdService extends Service
                 {
                     public void accept(String notrStr) throws Exception
                     {
-                        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
-                        /********************************tryOnAdEnd********************************/
+                        if(isHavedAdResourece)
+                        {
+                            Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
+                            intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentt);
+                        }
+                        else
+                        {
+                            mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FBD08813361F334FA6D5B851AF7E2FD").build());
+                        }/********************************tryOnAdEnd*******************************/
                     }
                 });
             }

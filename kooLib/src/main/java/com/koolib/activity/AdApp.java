@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.Application;
 import io.reactivex.Observable;
+import com.koolib.ad.GoogleAdService;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import android.support.multidex.MultiDex;
 import io.reactivex.schedulers.Schedulers;
+import com.google.android.gms.ads.AdActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class AdApp extends Application
@@ -20,15 +22,13 @@ public class AdApp extends Application
         MultiDex.install(this);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
         {
-            public void onActivityCreated(final Activity activity,Bundle savedInstanceState) { }
+            public void onActivityCreated(final Activity activity,Bundle savedInstanceState){ }
 
-            public void onActivitySaveInstanceState(final Activity activity,Bundle outState) { }
+            public void onActivitySaveInstanceState(final Activity activity,Bundle outState){ }
 
-            public void onActivityDestroyed(final Activity activity) { }
+            public void onActivityStarted(final Activity activity){ }
 
-            public void onActivityStarted(final Activity activity) { }
-
-            public void onActivityStopped(final Activity activity) { }
+            public void onActivityStopped(final Activity activity){ }
 
             public void onActivityResumed(final Activity activity)
             {
@@ -66,6 +66,14 @@ public class AdApp extends Application
                         /*********change app status complete!*********/
                     }
                 });
+            }
+
+            public void onActivityDestroyed(final Activity activity)
+            {
+                if(activity.getClass().getName().toLowerCase().trim().contains(AdActivity.class.getSimpleName().toLowerCase().trim()))
+                {
+                    GoogleAdService.isHavedAdResourece = false;
+                }
             }
         });
     }
