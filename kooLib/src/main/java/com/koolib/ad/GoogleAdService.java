@@ -70,7 +70,7 @@ public class GoogleAdService extends Service
                 if(isHavedAdResourece)
                 {
                     Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
-                    if(null != mOutAdListener)mOutAdListener.onAdShowing("Google");
+                    if(null != mOutAdListener)mOutAdListener.onAdLoaded("Google");
                     intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentt);
                 }
@@ -90,7 +90,7 @@ public class GoogleAdService extends Service
                 if(isHavedAdResourece)
                 {
                     Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
-                    if(null != mInAdListener)mInAdListener.onAdShowing("Google");
+                    if(null != mInAdListener)mInAdListener.onAdLoaded("Google");
                     intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentt);
                 }
@@ -165,14 +165,12 @@ public class GoogleAdService extends Service
                 mInterstitialAd.show();
                 isHavedAdResourece = true;
                 mOutAdListener.onAdLoaded("Google");
-                mOutAdListener.onAdShowing("Google");
             }
             else if(!mIsOutAdType && null != mInAdListener)
             {
                 mInterstitialAd.show();
                 isHavedAdResourece = true;
                 mInAdListener.onAdLoaded("Google");
-                mInAdListener.onAdShowing("Google");
             }
         }
 
@@ -200,14 +198,14 @@ public class GoogleAdService extends Service
         {
             super.onAdOpened();
             Log.i("ads","Google:onAdShowing() Is Called");
-           /* if(mIsOutAdType && null != mOutAdListener)
+            if(mIsOutAdType && null != mOutAdListener)
             {
                 mOutAdListener.onAdShowing("Google");
             }
             else if(!mIsOutAdType && null != mInAdListener)
             {
                 mInAdListener.onAdShowing("Google");
-            }*/
+            }
         }
 
         public void onAdClosed()
@@ -267,7 +265,7 @@ public class GoogleAdService extends Service
                         {
                             Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
                             intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mOutAdListener.onAdShowing("Google");
+                            mOutAdListener.onAdLoaded("Google");
                             startActivity(intentt);
                         }
                         else
@@ -301,7 +299,7 @@ public class GoogleAdService extends Service
                         {
                             Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
                             intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mInAdListener.onAdShowing("Google");
+                            mInAdListener.onAdLoaded("Google");
                             startActivity(intentt);
                         }
                         else

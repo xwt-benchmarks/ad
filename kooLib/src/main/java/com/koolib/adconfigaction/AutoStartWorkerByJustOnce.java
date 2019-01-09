@@ -34,7 +34,7 @@ public class AutoStartWorkerByJustOnce extends Worker
                 ProtectOutAdOfBase.getInstance(mContext).startUpProtectOutAdModel();
             }
         }
-        AutoStartWorkerUtils.autoStartWorkerByJustOnce(getInputData().getLong(INTERVAL_TIME,0),false);
+        AutoStartWorkerUtils.autoStartWorkerByCustomPeriodic(getInputData().getLong(INTERVAL_TIME,0),false);
         return Result.success();
     }
 

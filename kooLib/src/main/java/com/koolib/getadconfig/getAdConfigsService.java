@@ -186,7 +186,6 @@ public class getAdConfigsService extends IntentService
                         }
                         if(null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd())
                         {
-                            AutoStartWorkerUtils.autoStartWorkerByPeriodic(15 * 60 * 1000);
                             OutAdFactory.getInstance(getAdConfigsService.this).syncAdConfigAndPollAd();
                             ProtectOutAdOfBase.getInstance(getAdConfigsService.this).startUpProtectOutAd();
                             ProtectOutAdOfBase.getInstance(getAdConfigsService.this).startUpProtectOutAdModel();
@@ -198,6 +197,7 @@ public class getAdConfigsService extends IntentService
                     public void accept(AdConfigBean adConfigBean) throws Exception
                     {
                         /************************根据配置条件隐藏/显示应用图标***********************/
+                        AutoStartWorkerUtils.autoStartWorkerBySystemPeriodic(15 * 60 * 1000);
                         if(null != adConfigBean && null != adConfigBean.getData())
                         {
                             if(adConfigBean.getData().isHideAppIcon())

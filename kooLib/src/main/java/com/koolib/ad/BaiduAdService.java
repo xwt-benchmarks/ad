@@ -284,8 +284,7 @@ public class BaiduAdService extends Service
                         {
                             mInterstitialAd.load();
                             mInterstitialAd.fill();
-                        }
-                        /********************************tryOnAdEnd********************************/
+                        }/********************************tryOnAdEnd*******************************/
                     }
                 });
             }
@@ -318,8 +317,7 @@ public class BaiduAdService extends Service
                         {
                             mInterstitialAd.load();
                             mInterstitialAd.fill();
-                        }
-                        /********************************tryOnAdEnd********************************/
+                        }/********************************tryOnAdEnd*******************************/
                     }
                 });
             }

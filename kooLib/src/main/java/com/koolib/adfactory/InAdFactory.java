@@ -29,7 +29,7 @@ public class InAdFactory
     private volatile boolean mIsStartPollAd;
     private volatile static InAdFactory mInstance;
     private final String TAG = InAdFactory.class.getSimpleName();
-    /************************************************************/
+    /**********************************************************/
     private AdConfigBean mAdConfigBean;
     private BlockingQueue<AdTaskBean> mAdQueue;
     private int mPlayedAdTotalNum;//已经播放过的广告数量
@@ -95,33 +95,37 @@ public class InAdFactory
             public void onAdStarted(String venderName)
             {
                 Log.i(TAG, "onAdStarted Is Called！");
+
             }
 
-            public void onAdLoaded(String venderName)
+            public void onAdShowing(String venderName)
             {
-                Log.i(TAG, "onAdLoaded Is Called！");
+                Log.i(TAG, "onAdShowing Is Called！");
+
             }
 
             public void onAdClicked(String venderNamen)
             {
                 Log.i(TAG, "onAdClicked Is Called！");
+
             }
 
-            public void onAdError(String venderName, int code, String description)
-            {
-                Log.i(TAG, "onAdError Is Called！");
-            }
-
-            public void onAdShowing(String venderName)
+            public void onAdLoaded(String venderName)
             {
                 mIsPlayNextAd = true;
-                Log.i(TAG, "onAdShowing Is Called！");
+                Log.i(TAG, "onAdLoaded Is Called！");
             }
 
             public void onAdClosed(String venderName)
             {
                 mPlayedAdTotalNum++;
                 Log.i(TAG, "onAdClosed Is Called！");
+            }
+
+            public void onAdError(String venderName, int code, String description)
+            {
+                Log.i(TAG, "onAdError Is Called！");
+
             }
 
             public void onAdErrorWithOpenNextAd(String venderName, int code, String description,boolean isExtinguishingScreen,int residualRetryNumberOfVender)

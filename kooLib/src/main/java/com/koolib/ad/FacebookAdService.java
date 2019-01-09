@@ -226,8 +226,7 @@ public class FacebookAdService extends Service implements InterstitialAdListener
                     else
                     {
                         mInterstitialAd.loadAd();
-                    }
-                    /*********************************tryOnAdEnd***********************************/
+                    }/*********************************tryOnAdEnd**********************************/
                 }
             });
         }
@@ -272,8 +271,7 @@ public class FacebookAdService extends Service implements InterstitialAdListener
                     else
                     {
                         mInterstitialAd.loadAd();
-                    }
-                    /*********************************tryOnAdEnd***********************************/
+                    }/*********************************tryOnAdEnd**********************************/
                 }
             });
         }

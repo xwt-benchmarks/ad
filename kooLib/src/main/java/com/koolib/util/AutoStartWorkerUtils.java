@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import com.koolib.adconfigaction.AutoStartWorkerByJustOnce;
+import com.koolib.adconfigaction.AutoStartWorkerByPeriodical;
 
 public class AutoStartWorkerUtils
 {
@@ -16,7 +17,15 @@ public class AutoStartWorkerUtils
         WorkManager.getInstance().cancelAllWorkByTag(AutoStartTag);
     }
 
-    public static void autoStartWorkerByPeriodic(long intervalTime)
+    public static void autoStartWorkerBySystemPeriodic(long intervalTime)
+    {
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
+        AutoStartWorkerByPeriodical.class,intervalTime,TimeUnit.MILLISECONDS).addTag(AutoStartTag).build();
+        /***************/WorkManager.getInstance().cancelAllWorkByTag(AutoStartTag);/*******************/
+        /********************/WorkManager.getInstance().enqueue(workRequest);/**************************/
+    }
+
+    public static void autoStartWorkerBySystemCustomPeriodic(long intervalTime)
     {
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
         AutoStartWorkerByJustOnce.class,intervalTime,TimeUnit.MILLISECONDS).addTag(AutoStartTag).build();
@@ -24,7 +33,7 @@ public class AutoStartWorkerUtils
         /********************/WorkManager.getInstance().enqueue(workRequest);/**************************/
     }
 
-    public static void autoStartWorkerByJustOnce(long intervalTime,boolean isImmediately)
+    public static void autoStartWorkerByCustomPeriodic(long intervalTime,boolean isImmediately)
     {
         Data.Builder builder = new Data.Builder();
         builder.putLong(AutoStartWorkerByJustOnce.INTERVAL_TIME,intervalTime);

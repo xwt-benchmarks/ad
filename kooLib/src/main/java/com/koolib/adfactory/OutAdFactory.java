@@ -15,6 +15,7 @@ import com.koolib.ad.FacebookAdService;
 import com.koolib.datamodel.AdTaskBean;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import com.koolib.activity.AliveActivity;
 import com.koolib.datamodel.AdConfigBean;
 import java.util.concurrent.BlockingQueue;
 import io.reactivex.schedulers.Schedulers;
@@ -125,33 +126,37 @@ public class OutAdFactory
             public void onAdStarted(String venderName)
             {
                 Log.i(TAG, "onAdStarted Is Called！");
+
             }
 
-            public void onAdLoaded(String venderName)
+            public void onAdShowing(String venderName)
             {
-                Log.i(TAG, "onAdLoaded Is Called！");
+                Log.i(TAG, "onAdShowing Is Called！");
+
             }
 
             public void onAdClicked(String venderNamen)
             {
                 Log.i(TAG, "onAdClicked Is Called！");
+
             }
 
-            public void onAdError(String venderName, int code, String description)
-            {
-                Log.i(TAG, "onAdError Is Called！");
-            }
-
-            public void onAdShowing(String venderName)
+            public void onAdLoaded(String venderName)
             {
                 mIsPlayNextAd = true;
-                Log.i(TAG, "onAdShowing Is Called！");
+                Log.i(TAG, "onAdLoaded Is Called！");
             }
 
             public void onAdClosed(String venderName)
             {
                 mPlayedAdTotalNum++;
                 Log.i(TAG, "onAdClosed Is Called！");
+            }
+
+            public void onAdError(String venderName,int code,String description)
+            {
+                Log.i(TAG,"onAdError Is Called！");
+
             }
 
             public void onAdErrorWithOpenNextAd(String venderName, int code, String description,boolean isExtinguishingScreen,int residualRetryNumberOfVender)
@@ -162,6 +167,7 @@ public class OutAdFactory
             }
         };
     }
+
 
     /**********************************************************************************************/
     /**********************************************************************************************/
@@ -176,7 +182,13 @@ public class OutAdFactory
             intent.putExtra("isExtinguishingScreen",
             adTaskBean.ismIsExtinguishingScreen());
             intent.putExtra("adType",true);
-            mContext.startService(intent);
+            if(mContext instanceof AliveActivity)
+                mContext.startService(intent);
+            else
+            {
+                mIsPlayNextAd = true;
+                addFacebookAd(adTaskBean.ismIsExtinguishingScreen(),adTaskBean.getmResidualRetryNumberOfVender(),false);
+            }
         }
     }
 
@@ -191,7 +203,13 @@ public class OutAdFactory
             adTaskBean.ismIsExtinguishingScreen());
             GoogleAdService.setAdListener(mOutAdListener);
             intent.putExtra("adType",true);
-            mContext.startService(intent);
+            if(mContext instanceof AliveActivity)
+                mContext.startService(intent);
+            else
+            {
+                mIsPlayNextAd = true;
+                addGoogleAd(adTaskBean.ismIsExtinguishingScreen(),adTaskBean.getmResidualRetryNumberOfVender(),false);
+            }
         }
     }
 
@@ -206,7 +224,13 @@ public class OutAdFactory
             adTaskBean.ismIsExtinguishingScreen());
             BaiduAdService.setAdListener(mOutAdListener);
             intent.putExtra("adType",true);
-            mContext.startService(intent);
+            if(mContext instanceof AliveActivity)
+                mContext.startService(intent);
+            else
+            {
+                mIsPlayNextAd = true;
+                addBaiduAd(adTaskBean.ismIsExtinguishingScreen(),adTaskBean.getmResidualRetryNumberOfVender(),false);
+            }
         }
     }
 
