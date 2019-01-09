@@ -62,8 +62,9 @@ public class OutAdFactory
     {
         mAdConfigBean = SharepreferenceUtils.getAdConfig(mContext);
         /************************************设置同步服务器广告配置的时间****************************/
-        if(null != mAdConfigBean && null != mAdConfigBean.getData() && (SharepreferenceUtils.getOutAdUpdateTimeInfo(mContext) == 0l
-                                              || System.currentTimeMillis()>SharepreferenceUtils.getOutAdUpdateTimeInfo(mContext)))
+        if(null != mAdConfigBean && null != mAdConfigBean.getData() &&
+        (SharepreferenceUtils.getOutAdUpdateTimeInfo(mContext) == 0l||
+        System.currentTimeMillis() > SharepreferenceUtils.getOutAdUpdateTimeInfo(mContext)))
         {
             Calendar calendar=Calendar.getInstance();
             calendar.set(     Calendar.MINUTE,0    );
@@ -274,24 +275,24 @@ public class OutAdFactory
             adTaskBean.setmResidualRetryNumberOfVender(residualRetryNumberOfVender);
             /**************************************************************************************************************/
             int currentAdVenderIndex = mEffectiveAdIndex % (mEffectiveAdVenders.size() == 0 ? 1 :mEffectiveAdVenders.size());
-            if(currentAdVenderIndex < mAdConfigBean.getData().getAdBeans().size())
+            if(currentAdVenderIndex < mEffectiveAdVenders.size())
             {
                 if(!isExtinguishingScreen)
                 {
-                    adTaskBean.setmVenderName(mAdConfigBean.getData().getAdBeans().get(currentAdVenderIndex).getAdVender().toLowerCase().trim());
+                    adTaskBean.setmVenderName(mEffectiveAdVenders.get(currentAdVenderIndex).toLowerCase().trim());
                 }
-                else if(isExtinguishingScreen && !"google".equals(mAdConfigBean.getData().getAdBeans().get(currentAdVenderIndex).getAdVender().toLowerCase().trim()))
-                    adTaskBean.setmVenderName(mAdConfigBean.getData().getAdBeans().get(currentAdVenderIndex).getAdVender().toLowerCase().trim());
+                else if(isExtinguishingScreen && !"google".equals(mEffectiveAdVenders.get(currentAdVenderIndex).toLowerCase().trim()))
+                    adTaskBean.setmVenderName(mEffectiveAdVenders.get(currentAdVenderIndex).toLowerCase().trim());
                 else
                 {
-                    if(mAdConfigBean.getData().getAdBeans().size() == 1 && "google".equals(mAdConfigBean.getData().getAdBeans().get(0).getAdVender().toLowerCase().trim()))
+                    if(mEffectiveAdVenders.size() == 1 && "google".equals(mEffectiveAdVenders.get(0).toLowerCase().trim()))
                     {
                         return;
                     }
                     else
                     {
                         mEffectiveAdIndex++;
-                        addAd(true,residualRetryNumberOfVender);
+                        addAd(isExtinguishingScreen,residualRetryNumberOfVender);
                         return;
                     }
                 }

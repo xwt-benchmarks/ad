@@ -64,7 +64,7 @@ public class AliveActivity extends Activity
         {
             public String apply(String noteStr) throws Exception
             {
-                Thread.sleep(2000);
+                Thread.sleep(4000);
                 return "CloseAliveActivity";
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()

@@ -70,6 +70,7 @@ public class GoogleAdService extends Service
                 if(isHavedAdResourece)
                 {
                     Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
+                    if(null != mOutAdListener)mOutAdListener.onAdShowing("Google");
                     intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentt);
                 }
@@ -89,6 +90,7 @@ public class GoogleAdService extends Service
                 if(isHavedAdResourece)
                 {
                     Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
+                    if(null != mInAdListener)mInAdListener.onAdShowing("Google");
                     intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentt);
                 }
@@ -192,7 +194,6 @@ public class GoogleAdService extends Service
         {
             super.onAdImpression();
             Log.i("ads","Google:onAdImpression() Is Called");
-
         }
 
         public void onAdOpened()
@@ -266,6 +267,7 @@ public class GoogleAdService extends Service
                         {
                             Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
                             intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mOutAdListener.onAdShowing("Google");
                             startActivity(intentt);
                         }
                         else
@@ -299,6 +301,7 @@ public class GoogleAdService extends Service
                         {
                             Intent intentt = new Intent(GoogleAdService.this,AdActivity.class);
                             intentt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mInAdListener.onAdShowing("Google");
                             startActivity(intentt);
                         }
                         else

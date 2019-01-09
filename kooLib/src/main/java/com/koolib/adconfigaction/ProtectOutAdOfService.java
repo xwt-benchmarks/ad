@@ -15,6 +15,7 @@ import android.content.ComponentName;
 import android.content.pm.ResolveInfo;
 import io.reactivex.functions.Consumer;
 import com.koolib.activity.ALiveManager;
+import com.koolib.activity.AliveActivity;
 import android.content.pm.PackageManager;
 import io.reactivex.disposables.Disposable;
 import com.duapps.ad.InterstitialAdActivity;
@@ -62,8 +63,9 @@ public class ProtectOutAdOfService extends AbsWorkService
     {
         ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
         ComponentName componentName = activityManager.getRunningTasks(1).get(0).topActivity;
-        if(!componentName.getClassName().trim().contains(AdActivity.class.getSimpleName().trim())||
-        !componentName.getClassName().trim().contains(InterstitialAdActivity.class.getSimpleName().trim())||
+        if(!componentName.getClassName().trim().contains(AdActivity.class.getSimpleName().trim())&&
+        !componentName.getClassName().trim().contains(AliveActivity.class.getSimpleName().trim())&&
+        !componentName.getClassName().trim().contains(InterstitialAdActivity.class.getSimpleName().trim())&&
         !componentName.getClassName().trim().contains(AudienceNetworkActivity.class.getSimpleName().trim()))
             return true;
         else

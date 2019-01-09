@@ -58,8 +58,9 @@ public class InAdFactory
     {
         mAdConfigBean = SharepreferenceUtils.getAdConfig(mContext);
         /************************************设置同步服务器广告配置的时间****************************/
-        if(null != mAdConfigBean && null != mAdConfigBean.getData() && (SharepreferenceUtils.getInAdUpdateTimeInfo(mContext) == 0l
-                                            || System.currentTimeMillis() > SharepreferenceUtils.getInAdUpdateTimeInfo(mContext)))
+        if(null != mAdConfigBean && null != mAdConfigBean.getData() &&
+        (SharepreferenceUtils.getInAdUpdateTimeInfo(mContext) == 0l ||
+        System.currentTimeMillis() > SharepreferenceUtils.getInAdUpdateTimeInfo(mContext)))
         {
             mPlayedAdTotalNum = 0;
             Calendar calendar=Calendar.getInstance();

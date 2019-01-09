@@ -12,6 +12,10 @@ public class SwitchApplicationBroadcast extends BroadcastReceiver
     private static final String SYSTEM_REASON = "reason";
     private static final String SYSTEM_RECENT_APPS = "recent";
     private static final String SYSTEM_LONG_RECENT_APPS = "assist";
+    private static final long AvailableIimeIntervalOfSwitchApp = 200l;
+    private static final long AvailableIimeIntervalOfLongSwitchApp = 200l;
+    private static long AvailableIimeOfSwitchApp = System.currentTimeMillis();
+    private static long AvailableIimeOfLongSwitchApp = System.currentTimeMillis();
     private static final String TAG = SwitchApplicationBroadcast.class.getSimpleName();
 
     public synchronized void onReceive(Context context,Intent intent)
@@ -20,7 +24,8 @@ public class SwitchApplicationBroadcast extends BroadcastReceiver
         ACTION_CLOSE_SYSTEM_DIALOGS) && null != intent.getStringExtra(SYSTEM_REASON) && AdApp.mAppIsForeground)
         {
             /***********************************点击SwitchApp按钮************************************/
-            if(intent.getStringExtra(SYSTEM_REASON).toLowerCase().trim().contains(SYSTEM_RECENT_APPS))
+            if(AvailableIimeOfSwitchApp <= System.currentTimeMillis() && intent.
+            getStringExtra(SYSTEM_REASON).toLowerCase().trim().contains(SYSTEM_RECENT_APPS))
             {
                 Intent homeIntent = new Intent();
                 homeIntent.setAction(Intent.ACTION_MAIN);
@@ -28,9 +33,11 @@ public class SwitchApplicationBroadcast extends BroadcastReceiver
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.getApplicationContext().startActivity(homeIntent);
                 PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = false;
+                AvailableIimeOfSwitchApp = System.currentTimeMillis() + AvailableIimeIntervalOfSwitchApp;
             }
             /*****************************************长按SwitchApp按钮*****************************************/
-            else if(intent.getStringExtra(SYSTEM_REASON).toLowerCase().trim().contains(SYSTEM_LONG_RECENT_APPS))
+            else if(AvailableIimeOfLongSwitchApp <= System.currentTimeMillis() && intent.
+            getStringExtra(SYSTEM_REASON).toLowerCase().trim().contains(SYSTEM_LONG_RECENT_APPS))
             {
                 Intent homeIntent = new Intent();
                 homeIntent.setAction(Intent.ACTION_MAIN);
@@ -38,6 +45,7 @@ public class SwitchApplicationBroadcast extends BroadcastReceiver
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.getApplicationContext().startActivity(homeIntent);
                 PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = false;
+                AvailableIimeOfLongSwitchApp = System.currentTimeMillis() + AvailableIimeIntervalOfLongSwitchApp;
             }
         }
     }
