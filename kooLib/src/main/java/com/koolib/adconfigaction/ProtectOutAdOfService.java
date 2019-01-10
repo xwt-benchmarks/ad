@@ -63,10 +63,11 @@ public class ProtectOutAdOfService extends AbsWorkService
     {
         ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
         ComponentName componentName = activityManager.getRunningTasks(1).get(0).topActivity;
-        if(!componentName.getClassName().trim().contains(AdActivity.class.getSimpleName().trim())&&
-        !componentName.getClassName().trim().contains(AliveActivity.class.getSimpleName().trim())&&
+        if(componentName.getPackageName().toLowerCase().trim().contains(getPackageName().toLowerCase().trim())&&
+        !componentName.getClassName().trim().contains(AudienceNetworkActivity.class.getSimpleName().trim())&&
         !componentName.getClassName().trim().contains(InterstitialAdActivity.class.getSimpleName().trim())&&
-        !componentName.getClassName().trim().contains(AudienceNetworkActivity.class.getSimpleName().trim()))
+        !componentName.getClassName().trim().contains(AliveActivity.class.getSimpleName().trim())&&
+        !componentName.getClassName().trim().contains(AdActivity.class.getSimpleName().trim()))
             return true;
         else
             return false;
