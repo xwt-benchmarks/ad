@@ -28,26 +28,25 @@
     public static ** valueOf(java.lang.String);
 }
 
--keepclassmembers class com.koolib.KooWebActivity$JsCallJava {
-   public *;
-}
-#datamodel
--keep public class com.koolib.datamodel.**{*;}
+####################################################################################################
+#如果主项目targetSdkVersion<28,那么主项目的混淆规则中必须加上-ignorewarnings标签，否则WorkManager会报错#
+####################################################################################################
 
-#facebook
+#all(Note)
+-ignorewarnings
+##facebook
 -keep class com.facebook.ads.NativeAd
-
-#google
+##datamodel
+-keep public class com.koolib.datamodel.**{*;}
+######google
 -keep public class com.google.android.gms.ads.** {public *;}
-
-#baidu
--keep class com.duapps.ad.**{*;}
+########baidu
 -dontwarn com.duapps.ad.**
--keep public class * extends android.content.BroadcastReceiver
+-keep class com.duapps.ad.**{*;}
 -keep public class * extends android.content.ContentProvider
+-keep public class * extends android.content.BroadcastReceiver
 -keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
- @com.google.android.gms.common.annotation.KeepName *;}
--keep class com.google.android.gms.common.GooglePlayServicesUtil{ public <methods>; }
--keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{ public <methods>; }
--keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info{ public <methods>; }
+-keep class com.google.android.gms.common.GooglePlayServicesUtil{public <methods>;}
+-keepclassmembernames class * {@com.google.android.gms.common.annotation.KeepName *;}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{public <methods>;}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info{public <methods>;}
