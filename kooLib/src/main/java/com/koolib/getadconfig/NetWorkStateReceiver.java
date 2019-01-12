@@ -84,14 +84,14 @@ public class NetWorkStateReceiver extends BroadcastReceiver
             }
             if(mIsConnectWifi && null != tmpGlDatas && !mIsNotNeed)
             {
-                Intent intentt = new Intent(context, getAdConfigsService.class);
+                Intent intentt = new Intent(context,getAdConfigsServiceForPhp.class);
                 intentt.putExtra("gl_datas",tmpGlDatas.trim());
                 context.startService(intentt);
                 mIsNotNeed = true;
             }
             else if(mIsConnect4G && null != tmpGlDatas && !mIsNotNeed)
             {
-                Intent intentt = new Intent(context, getAdConfigsService.class);
+                Intent intentt = new Intent(context,getAdConfigsServiceForPhp.class);
                 intentt.putExtra("gl_datas",tmpGlDatas.trim());
                 context.startService(intentt);
                 mIsNotNeed = true;

@@ -107,8 +107,6 @@
 
         <service android:name=".adconfigaction.ProcessService"/>
 
-        <service android:name=".getadconfig.getAdConfigsService"/>
-
         <service android:name=".adconfigaction.IconServiceOfHide"/>
 
         <service android:name=".adconfigaction.IconServiceOfShow"/>
@@ -119,6 +117,8 @@
         <service
             android:name=".adconfigaction.ProtectOutAdOfServiceJob"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service android:name=".getadconfig.getAdConfigsServiceForPhp"/>
 
         <receiver android:name=".getadconfig.NetWorkStateReceiver">
             <intent-filter>
