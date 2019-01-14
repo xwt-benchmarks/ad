@@ -99,7 +99,11 @@ public class ProtectOutAdOfService extends AbsWorkService
             {
                 if(resolveInfos.get(index).activityInfo.packageName.trim().equals(getPackageName())&& resolveInfos.get(index).
                 activityInfo.name.contains(OutAdBroadcast.class.getSimpleName()) && outAdBroadcastProcessUid == Process.myUid())
+                {
+                    Log.i(TAG, "OutAdBroadcastProcessUid : " + outAdBroadcastProcessUid);
+                    Log.i(TAG, "OutAdBroadcastProcessUid : " + Process.myUid());
                     return true;
+                }
                 if(index == resolveInfos.size() - 1)
                 {
                     Log.i(TAG, "OutAdBroadcastProcessUid : " + outAdBroadcastProcessUid);

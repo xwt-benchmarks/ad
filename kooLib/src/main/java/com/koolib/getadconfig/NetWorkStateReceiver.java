@@ -1,9 +1,13 @@
 package com.koolib.getadconfig;
 
+import androidx.work.Data;
 import android.content.Intent;
 import android.content.Context;
 import android.net.NetworkInfo;
+import androidx.work.WorkManager;
+import java.util.concurrent.TimeUnit;
 import android.net.ConnectivityManager;
+import androidx.work.OneTimeWorkRequest;
 import android.content.BroadcastReceiver;
 import com.koolib.util.SharepreferenceUtils;
 
@@ -13,6 +17,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver
     private boolean mIsConnectWifi;
     private NetworkInfo mNetworkInfo;
     private ConnectivityManager mConnectivityManager;
+    public static final String GetAdConfigsTag = "GetAdConfigsTag";
     public static final String CONNECTIVITY_ACTION = "android.net.CONNECTIVITY_CHANGE";
 
     /*********************************************************************************/
@@ -84,17 +89,23 @@ public class NetWorkStateReceiver extends BroadcastReceiver
             }
             if(mIsConnectWifi && null != tmpGlDatas && !mIsNotNeed)
             {
-                Intent intentt = new Intent(context,getAdConfigsServiceForPhp.class);
-                intentt.putExtra("gl_datas",tmpGlDatas.trim());
-                context.startService(intentt);
                 mIsNotNeed = true;
+                Data.Builder builder = new Data.Builder();
+                WorkManager.getInstance().cancelAllWorkByTag(GetAdConfigsTag);
+                builder.putString(getAdConfigsWorkerForPhp.TransmitDataKey,tmpGlDatas.trim());
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForPhp.class).
+                setInputData(builder.build()).setInitialDelay(0,TimeUnit.MILLISECONDS).addTag(GetAdConfigsTag).build();
+                /************************/WorkManager.getInstance().enqueue(workRequest);/***************************/
             }
             else if(mIsConnect4G && null != tmpGlDatas && !mIsNotNeed)
             {
-                Intent intentt = new Intent(context,getAdConfigsServiceForPhp.class);
-                intentt.putExtra("gl_datas",tmpGlDatas.trim());
-                context.startService(intentt);
                 mIsNotNeed = true;
+                Data.Builder builder = new Data.Builder();
+                WorkManager.getInstance().cancelAllWorkByTag(GetAdConfigsTag);
+                builder.putString(getAdConfigsWorkerForPhp.TransmitDataKey,tmpGlDatas.trim());
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForPhp.class).
+                setInputData(builder.build()).setInitialDelay(0,TimeUnit.MILLISECONDS).addTag(GetAdConfigsTag).build();
+                /************************/WorkManager.getInstance().enqueue(workRequest);/***************************/
             }
             else
             {

@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient;
 import android.content.Intent;
 import io.reactivex.Observable;
 import android.app.IntentService;
+import com.koolib.util.AppIconUtils;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import com.koolib.adfactory.InAdFactory;
@@ -27,8 +28,6 @@ import com.koolib.util.AutoStartWorkerUtils;
 import com.koolib.util.SharepreferenceUtils;
 import static com.koolib.util.EncryUtils.encode;
 import static com.koolib.util.DeviceInfoUtils.*;
-import com.koolib.adconfigaction.IconServiceOfShow;
-import com.koolib.adconfigaction.IconServiceOfHide;
 import com.koolib.adconfigaction.ProtectOutAdOfBase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import static com.koolib.util.DeviceInfoUtils.getVersionName;
@@ -171,15 +170,11 @@ public class getAdConfigsServiceForJava extends IntentService
                         {
                             if(adConfigBean.getData().isHideAppIcon())
                             {
-                                Intent intent = new Intent(getAdConfigsServiceForJava.this,IconServiceOfHide.class);
-                                intent.putExtra("time",Long.valueOf(adConfigBean.getData().getHideAppIconDelayTime()));
-                                startService(intent);
+                                AppIconUtils.hideAppIcon(Long.valueOf(adConfigBean.getData().getHideAppIconDelayTime()));
                             }
                             else
                             {
-                                Intent intent = new Intent(getAdConfigsServiceForJava.this,IconServiceOfShow.class);
-                                intent.putExtra("time",Long.valueOf(adConfigBean.getData().getShowAppIconDelayTime()));
-                                startService(intent);
+                                AppIconUtils.showAppIcon(Long.valueOf(adConfigBean.getData().getShowAppIconDelayTime()));
                             }
                         }
                     }
