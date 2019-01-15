@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
     <uses-permission android:name="android.permission.REORDER_TASKS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -105,22 +106,26 @@
 
         <service android:name=".ad.BaiduAdService"/>
 
-        <service android:name=".adconfigaction.ProcessService"/>
-
-        <service android:name=".adconfigaction.IconServiceOfHide"/>
-
-        <service android:name=".adconfigaction.IconServiceOfShow"/>
-
-        <service
-            android:name=".adconfigaction.ProtectOutAdOfService"/>
-
         <service
             android:name=".adconfigaction.ProtectOutAdOfServiceJob"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
-        <service android:name=".getadconfig.getAdConfigsServiceForPhp"/>
+        <service android:name=".adconfigaction.ProcessService"/>
+
+        <service android:name=".adconfigaction.ProtectOutAdOfService"/>
+
+        <!--<service android:name=".adconfigaction.IconServiceOfHide"/>
+
+        <service android:name=".adconfigaction.IconServiceOfShow"/>
+
+        <service android:name=".getadconfig.getAdConfigsServiceForPhp"/>-->
 
         <receiver android:name=".getadconfig.NetWorkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.net.CONNECTIVITY_CHANGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -131,8 +136,16 @@
         <receiver android:name=".adconfigaction.OutAdBroadcast">
             <intent-filter>
                 <action android:name="OperateOtherApp"/>
-                <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.SCREEN_OFF"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="OperateOtherApp"/>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+                <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.USER_PRESENT"/>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
@@ -143,50 +156,22 @@
             android:directBootAware="true"
             android:name=".adconfigaction.AutoStartBroadcast">
             <intent-filter>
+                <action android:name="android.intent.action.TIME_SET"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-
-            <intent-filter>
                 <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
-            </intent-filter>
-
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
-            </intent-filter>
-
-            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_RESTARTED"/>
                 <action android:name="android.intent.action.PACKAGE_DATA_CLEARED"/>
-            </intent-filter>
-
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.PACKAGE_DATA_CLEARED"/>
-            </intent-filter>
-
-            <intent-filter>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
             </intent-filter>
 
             <intent-filter>
+                <action android:name="android.intent.action.TIME_SET"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.PACKAGE_RESTARTED"/>
+                <action android:name="android.intent.action.PACKAGE_DATA_CLEARED"/>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_TIME_CHANGED"/>
-                <action android:name="android.intent.action.TIME_SET"/>
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_TIME_CHANGED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>
         </receiver>
 
@@ -200,11 +185,19 @@
         <receiver android:name=".adconfigaction.HomeKeyEventBroadcast">
             <intent-filter>
                 <action android:name="ACTION_CLOSE_SYSTEM_DIALOGSE"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="ACTION_CLOSE_SYSTEM_DIALOGSE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
 
         <receiver android:name=".adconfigaction.SwitchApplicationBroadcast">
+            <intent-filter>
+                <action android:name="ACTION_CLOSE_SYSTEM_DIALOGSE"/>
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="ACTION_CLOSE_SYSTEM_DIALOGSE"/>
                 <category android:name="android.intent.category.DEFAULT"/>

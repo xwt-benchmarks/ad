@@ -35,21 +35,17 @@ public class AliveActivity extends Activity
         params.height = 1;
         params.format = PixelFormat.TRANSPARENT;
         params.windowAnimations = android.R.style.Animation_Translucent;
-        //params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         window.setAttributes(params);
         ALiveManager.getInstance().setAlive(this);
-    }
-
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
-        super.onWindowFocusChanged(hasFocus);
-        if(hasFocus)openOutAdOfApp();
+        openOutAdOfApp();
     }
 
     protected void onNewIntent(Intent intent)
     {
         ALiveManager.getInstance().setAlive(this);
         super.onNewIntent(intent);
+        openOutAdOfApp();
     }
 
     public void openOutAdOfApp()
@@ -68,7 +64,7 @@ public class AliveActivity extends Activity
         {
             public String apply(String noteStr) throws Exception
             {
-                Thread.sleep(4000);
+                Thread.sleep(8000);
                 return "CloseAliveActivity";
             }
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()

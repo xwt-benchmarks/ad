@@ -12,9 +12,9 @@ public class AutoStartBroadcast extends BroadcastReceiver
 {
     public void onReceive(final Context context, Intent intent)
     {
-        if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED) ||
-           intent.getAction().equals(Intent.ACTION_TIME_CHANGED) || intent.getAction().equals(Intent.ACTION_TIMEZONE_CHANGED) ||
-           intent.getAction().equals(Intent.ACTION_PACKAGE_DATA_CLEARED))
+        if(intent.getAction().equals(Intent.ACTION_PACKAGE_DATA_CLEARED) || intent.getAction().equals(Intent.ACTION_PACKAGE_RESTARTED) ||
+           intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED) ||
+           intent.getAction().equals(Intent.ACTION_TIME_CHANGED) || intent.getAction().equals(Intent.ACTION_TIMEZONE_CHANGED))
         {
             AdConfigBean adConfigBean = SharepreferenceUtils.getAdConfig(context);
             if(null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isAutoStartUpApp())

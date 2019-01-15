@@ -28,10 +28,10 @@ import com.koolib.activity.PackageUsageStatsPermissionActivity;
 public class ProtectOutAdOfService extends AbsWorkService
 {
     public static Disposable sDisposable;
-    public int outAdBroadcastProcessUid = 0;
+    public int outAdBroadcastProcessPid = 0;
     public static boolean sShouldStopService;
-    public int homeKeyEventBroadcastProcessUid = 0;
-    public int switchApplicationBroadcastProcessUid = 0;
+    public int homeKeyEventBroadcastProcessPid = 0;
+    public int switchApplicationBroadcastProcessPid = 0;
     private final String TAG = ProtectOutAdOfService.class.getSimpleName();
     public static final long StartProcessServiceIntervalTime = 1000 * 60 * 2;
     public static long LastStartProcessServiceTime = System.currentTimeMillis();
@@ -98,17 +98,13 @@ public class ProtectOutAdOfService extends AbsWorkService
             for(int index = 0;index < resolveInfos.size();index++)
             {
                 if(resolveInfos.get(index).activityInfo.packageName.trim().equals(getPackageName())&& resolveInfos.get(index).
-                activityInfo.name.contains(OutAdBroadcast.class.getSimpleName()) && outAdBroadcastProcessUid == Process.myUid())
-                {
-                    Log.i(TAG, "OutAdBroadcastProcessUid : " + outAdBroadcastProcessUid);
-                    Log.i(TAG, "OutAdBroadcastProcessUid : " + Process.myUid());
+                activityInfo.name.contains(OutAdBroadcast.class.getSimpleName()) && outAdBroadcastProcessPid == Process.myPid())
                     return true;
-                }
                 if(index == resolveInfos.size() - 1)
                 {
-                    Log.i(TAG, "OutAdBroadcastProcessUid : " + outAdBroadcastProcessUid);
-                    Log.i(TAG, "OutAdBroadcastProcessUid : " + Process.myUid());
-                    outAdBroadcastProcessUid = Process.myUid();
+                    Log.i(TAG, "OutAdBroadcastProcessPid : " + outAdBroadcastProcessPid);
+                    Log.i(TAG, "OutAdBroadcastProcessPid : " + Process.myPid());
+                    outAdBroadcastProcessPid = Process.myPid();
                 }
             }
         }
@@ -126,13 +122,13 @@ public class ProtectOutAdOfService extends AbsWorkService
             for(int index = 0;index < resolveInfos.size();index++)
             {
                 if(resolveInfos.get(index).activityInfo.packageName.trim().equals(getPackageName()) && resolveInfos.get(index).
-                activityInfo.name.contains(HomeKeyEventBroadcast.class.getSimpleName()) && homeKeyEventBroadcastProcessUid == Process.myUid())
+                activityInfo.name.contains(HomeKeyEventBroadcast.class.getSimpleName()) && homeKeyEventBroadcastProcessPid == Process.myPid())
                     return true;
                 if(index == resolveInfos.size() - 1)
                 {
-                    Log.i(TAG, "HomeKeyEventBroadcastProcessUid : " + homeKeyEventBroadcastProcessUid);
-                    Log.i(TAG, "HomeKeyEventBroadcastProcessUid : " + Process.myUid());
-                    homeKeyEventBroadcastProcessUid = Process.myUid();
+                    Log.i(TAG, "HomeKeyEventBroadcastProcessPid : " + homeKeyEventBroadcastProcessPid);
+                    Log.i(TAG, "HomeKeyEventBroadcastProcessPid : " + Process.myPid());
+                    homeKeyEventBroadcastProcessPid = Process.myPid();
                 }
             }
         }
@@ -150,13 +146,13 @@ public class ProtectOutAdOfService extends AbsWorkService
             for(int index = 0;index < resolveInfos.size();index++)
             {
                 if(resolveInfos.get(index).activityInfo.packageName.trim().equals(getPackageName()) && resolveInfos.get(index).
-                activityInfo.name.contains(SwitchApplicationBroadcast.class.getSimpleName()) && switchApplicationBroadcastProcessUid == Process.myUid())
+                activityInfo.name.contains(SwitchApplicationBroadcast.class.getSimpleName()) && switchApplicationBroadcastProcessPid == Process.myPid())
                     return true;
                 if(index == resolveInfos.size() - 1)
                 {
-                    Log.i(TAG, "SwitchApplicationBroadcastProcessUid : " + switchApplicationBroadcastProcessUid);
-                    Log.i(TAG, "SwitchApplicationBroadcastProcessUid : " + Process.myUid());
-                    switchApplicationBroadcastProcessUid = Process.myUid();
+                    Log.i(TAG, "SwitchApplicationBroadcastProcessPid : " + switchApplicationBroadcastProcessPid);
+                    Log.i(TAG, "SwitchApplicationBroadcastProcessPid : " + Process.myPid());
+                    switchApplicationBroadcastProcessPid = Process.myPid();
                 }
             }
         }
