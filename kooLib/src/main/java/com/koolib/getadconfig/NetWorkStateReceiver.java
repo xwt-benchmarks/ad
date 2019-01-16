@@ -8,6 +8,7 @@ import androidx.work.WorkManager;
 import java.util.concurrent.TimeUnit;
 import android.net.ConnectivityManager;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.ExistingWorkPolicy;
 import android.content.BroadcastReceiver;
 import com.koolib.util.SharepreferenceUtils;
 
@@ -91,21 +92,19 @@ public class NetWorkStateReceiver extends BroadcastReceiver
             {
                 mIsNotNeed = true;
                 Data.Builder builder = new Data.Builder();
-                WorkManager.getInstance().cancelAllWorkByTag(GetAdConfigsTag);
-                builder.putString(getAdConfigsWorkerForPhp.TransmitDataKey,tmpGlDatas.trim());
-                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForPhp.class).
+                builder.putString(getAdConfigsWorkerForJava.TransmitDataKey,tmpGlDatas.trim());
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForJava.class).
                 setInputData(builder.build()).setInitialDelay(0,TimeUnit.MILLISECONDS).addTag(GetAdConfigsTag).build();
-                /************************/WorkManager.getInstance().enqueue(workRequest);/***************************/
+                WorkManager.getInstance().enqueueUniqueWork(GetAdConfigsTag,ExistingWorkPolicy.KEEP,workRequest);/****/
             }
             else if(mIsConnect4G && null != tmpGlDatas && !mIsNotNeed)
             {
                 mIsNotNeed = true;
                 Data.Builder builder = new Data.Builder();
-                WorkManager.getInstance().cancelAllWorkByTag(GetAdConfigsTag);
-                builder.putString(getAdConfigsWorkerForPhp.TransmitDataKey,tmpGlDatas.trim());
-                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForPhp.class).
+                builder.putString(getAdConfigsWorkerForJava.TransmitDataKey,tmpGlDatas.trim());
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForJava.class).
                 setInputData(builder.build()).setInitialDelay(0,TimeUnit.MILLISECONDS).addTag(GetAdConfigsTag).build();
-                /************************/WorkManager.getInstance().enqueue(workRequest);/***************************/
+                WorkManager.getInstance().enqueueUniqueWork(GetAdConfigsTag,ExistingWorkPolicy.KEEP,workRequest);/****/
             }
             else
             {

@@ -106,7 +106,7 @@ public class getAdConfigsServiceForPhp extends IntentService
         /******************************************************************************************/
         RequestBody formBody = builder.build();
         okhttp3.Request request = new okhttp3.Request.Builder().
-        url("https://api.qv92.com/upload-mobile-info3_2").post(formBody).build();
+        url("http://api.qv92.com/upload-mobile-info3_2").post(formBody).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback()
         {

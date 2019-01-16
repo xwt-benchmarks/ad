@@ -28,16 +28,14 @@ import io.reactivex.schedulers.Schedulers;
 import com.koolib.util.AutoStartWorkerUtils;
 import com.koolib.util.SharepreferenceUtils;
 import static com.koolib.util.DeviceInfoUtils.*;
+import static com.koolib.util.EncryUtils.encode;
 import com.koolib.adconfigaction.ProtectOutAdOfBase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class getAdConfigsWorkerForPhp extends Worker
+public class getAdConfigsWorkerForJava extends Worker
 {
     private Context mContext;
-    private String secretKey;
     private OkHttpClient client;
-    private String operationAction;
-    private boolean requestCompleteData;
     private WorkerParameters mWorkerParameters;
     public static final String TransmitDataKey = "gl_datas";
 
@@ -46,54 +44,50 @@ public class getAdConfigsWorkerForPhp extends Worker
     public Result doWork()
     {
         FormBody.Builder builder = new FormBody.Builder();
-        builder.add("b",encrypt(getSerialNumber(),secretKey,operationAction)).
-                add("s",encrypt(getIpAddressOfOut(),secretKey,operationAction)).
-                add("v",encrypt(getVersionName(mContext),secretKey,operationAction)).
-                add("n",encrypt(mContext.getPackageName(),secretKey,operationAction)).
-                add("a",encrypt(getAndroidId(getApplicationContext()),secretKey,operationAction));
-        requestCompleteData = SharepreferenceUtils.getAdConfigCompleteness(mContext);/***********/
-        if(requestCompleteData)
+        builder.add("b",encode(getSerialNumber()))./*****/
+                add("f",encode(getSystemVersion()))./****/
+                add("i",encode(getSystemLanguage()))./***/
+                add("s",encode(getIpAddressOfOut()))./***/
+                add("j",encode(getCurrentTimeZone()))./**/
+                add("a",encode(getAndroidId(mContext))).//
+                add("v",encode(getVersionName(mContext))).
+                add("m",encode(android.os.Build.HARDWARE)).
+                add("n",encode(mContext.getPackageName())).
+                add("e",encode(getIpAddressOfIn(mContext))).
+                add("k",encode(getRomTotalMemory(mContext))).
+                add("l",encode(getRamTotalMemory(mContext))).
+                add("d",encode(getScreenResolution(mContext))).
+                add("h",encode((isHasSimCard(mContext) ? "1" : "0"))).
+                add("c",encode(getDeviceBrand() + ":" + getSystemModel())).
+                add("g",encode((checkWhetherDeviceIsRooted() ? "1" : "0")));
+        /******************************************************************************************/
+        /******************************************************************************************/
+        String glDatasStr = getInputData().getString(TransmitDataKey);
+        Map<String,String> glDatasMap  =  new HashMap<String,String>();
+        String[] glDatasArray = glDatasStr.split("&");
+        for(int index = 0;index < glDatasArray.length;index++)
         {
-            String glDatasStr = getInputData().getString(TransmitDataKey);
-            Map<String,String> glDatasMap = new HashMap<String,String>();
-            String[] glDatasArray = glDatasStr.split("&");
-            for(int index = 0;index < glDatasArray.length;index++)
-            {
-                String[] glDatasKeyValue = glDatasArray[index].split("=");
-                if(glDatasKeyValue.length == 2)
-                    glDatasMap.put(glDatasKeyValue[0].trim(),glDatasKeyValue[1].trim());
-                else
-                    glDatasMap.put(glDatasKeyValue[0].trim(),"");
-            }
-            Iterator<Map.Entry<String,String>> iterator = glDatasMap.entrySet().iterator();
-            while(iterator.hasNext())
-            {
-                Map.Entry<String, String> entry = iterator.next();
-                builder.add(entry.getKey().trim(),encrypt(entry.getValue().trim(),secretKey,operationAction));
-            }
-            builder.add("f",encrypt(getSystemVersion(),secretKey,operationAction)).
-                    add("i",encrypt(getSystemLanguage(),secretKey,operationAction)).
-                    add("j",encrypt(getCurrentTimeZone(),secretKey,operationAction)).
-                    add("m",encrypt(android.os.Build.HARDWARE,secretKey,operationAction)).
-                    add("e",encrypt(getIpAddressOfIn(mContext),secretKey,operationAction)).
-                    add("k",encrypt(getRomTotalMemory(mContext),secretKey,operationAction)).
-                    add("d",encrypt(getScreenResolution(mContext),secretKey,operationAction)).
-                    add("c",encrypt(getDeviceBrand() + ":" + getSystemModel(),secretKey,operationAction)).
-                    add("l",encrypt(getRamTotalMemory(getApplicationContext()),secretKey,operationAction)).
-                    add("g",encrypt((checkWhetherDeviceIsRooted() ? "1" : "0"),secretKey,operationAction)).
-                    add("h",encrypt((isHasSimCard(getApplicationContext()) ? "1" : "0"),secretKey,operationAction));
+            String[] glDatasKeyValue = glDatasArray[index].split("=");
+            if(glDatasKeyValue.length == 2)
+                glDatasMap.put(glDatasKeyValue[0].trim(),glDatasKeyValue[1].trim());
+            else
+                glDatasMap.put(glDatasKeyValue[0].trim(),"");
         }
-        else
-            builder.add("type",encrypt("1",secretKey,operationAction));
+        Iterator<Map.Entry<String,String>> iterator = glDatasMap.entrySet().iterator();
+        while(iterator.hasNext())
+        {
+            Map.Entry<String, String> entry = iterator.next();
+            builder.add(entry.getKey().trim(),encode(entry.getValue().trim()));
+        }
         /******************************************************************************************/
         /******************************************************************************************/
         RequestBody formBody = builder.build();
-        okhttp3.Request request = new okhttp3.Request.Builder().
-        url("http://api.qv92.com/upload-mobile-info3_2").post(formBody).build();
+        okhttp3.Request request=new okhttp3.Request.Builder().
+        url("http://47.92.170.43/api").post(formBody).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback()
         {
-            public void onFailure(Call call,IOException e)
+            public void onFailure(Call call, IOException e)
             {
                 new Handler(Looper.getMainLooper()).post(new Runnable()
                 {
@@ -123,21 +117,12 @@ public class getAdConfigsWorkerForPhp extends Worker
                 });
             }
 
-            public void onResponse(Call call,Response response) throws IOException
+            public void onResponse(Call call, Response response) throws IOException
             {
                 Observable.just(response).map(new Function<Response, AdConfigBean>()
                 {
                     public AdConfigBean apply(Response response) throws Exception
                     {
-                        AdConfigBean oldAdConfigBean = SharepreferenceUtils.getAdConfig(mContext);
-                        if(null == oldAdConfigBean || null == oldAdConfigBean.getData())
-                        {
-                            oldAdConfigBean = new AdConfigBean();
-                            oldAdConfigBean.getData().setAutoStartUpApp(true);
-                            oldAdConfigBean.getData().setTurnOnTheAppInAd(true);
-                            oldAdConfigBean.getData().setTurnOnTheAppOutAd(false);
-                            oldAdConfigBean.getData().setSelectedAppInAdVender("facebook");
-                        }
                         AdConfigBean adConfigBean =  new Gson().fromJson(response.body().string(),AdConfigBean.class);
                         if(null == adConfigBean || null == adConfigBean.getData())
                             adConfigBean = SharepreferenceUtils.getAdConfig(mContext);
@@ -149,19 +134,7 @@ public class getAdConfigsWorkerForPhp extends Worker
                             adConfigBean.getData().setTurnOnTheAppOutAd(false);
                             adConfigBean.getData().setSelectedAppInAdVender("facebook");
                         }
-                        if(!requestCompleteData)
-                        {
-                            if(null != oldAdConfigBean && null != oldAdConfigBean.getData() && null != adConfigBean &&
-                            null != adConfigBean.getData() && null != adConfigBean.getData().getAdBeans() && adConfigBean.getData().getAdBeans().size() > 0)
-                            {
-                                oldAdConfigBean.getData().getAdBeans().clear();
-                                oldAdConfigBean.getData().getAdBeans().addAll(
-                                adConfigBean.getData().getAdBeans());
-                                adConfigBean = oldAdConfigBean;
-                            }
-                        }
                         SharepreferenceUtils.saveAdConfig(mContext,adConfigBean);
-                        SharepreferenceUtils.saveAdConfigCompleteness(mContext,false);
                         if(null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppInAd())
                         {
                             InAdFactory.getInstance(mContext).syncAdConfigAndPollAd();
@@ -198,13 +171,11 @@ public class getAdConfigsWorkerForPhp extends Worker
         return Result.success();
     }
 
-    public getAdConfigsWorkerForPhp(@NonNull Context context,@NonNull WorkerParameters workerParams)
+    public getAdConfigsWorkerForJava(@NonNull Context context, @NonNull WorkerParameters workerParams)
     {
-        super(context,workerParams);
-        operationAction = "e";/****/
-        client = new OkHttpClient();
+        super(context, workerParams);
+        client  = new OkHttpClient();
         mWorkerParameters = workerParams;
         mContext = context.getApplicationContext();
-        secretKey = "WASE@#TGE23456uhtnp3454zXvkfgopedg-0p-[0;oli5yuwranzx";
     }
 }
