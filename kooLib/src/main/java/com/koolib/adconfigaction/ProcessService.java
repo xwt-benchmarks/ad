@@ -25,15 +25,14 @@ import com.jaredrummler.android.processes.models.AndroidAppProcess;
 public class ProcessService extends Service
 {
     private Disposable mDisposable;
-    private String mLateTopAppPackageName;
     private List<String> mNotNeedAdForApps;
     private UsageStatsManager mUsageStatsManager;
+    private static String mLateTopAppPackageName;
     private static final String TAG = "ProcessService";
 
     public void onCreate()
     {
         super.onCreate();
-        mLateTopAppPackageName = "";
         mNotNeedAdForApps = new ArrayList<>();
         mNotNeedAdForApps.add("com.antiy.avl");
         mNotNeedAdForApps.add("com.qihoo.security");
@@ -50,7 +49,6 @@ public class ProcessService extends Service
     {
         super.onDestroy();
         mUsageStatsManager = null;
-        mLateTopAppPackageName = null;
         if(null != mNotNeedAdForApps)
         {
             mNotNeedAdForApps.clear();
@@ -105,14 +103,27 @@ public class ProcessService extends Service
             }
 
             public void onNext(Long value)
-            {
+            {   if(null == mLateTopAppPackageName) mLateTopAppPackageName = "";
                 Log.i(TAG, "mLateTopAppPackageName:" + mLateTopAppPackageName);
                 Log.i(TAG, "getTopAppPackageName():" + getTopAppPackageName());
-                if(!getTopAppPackageName().trim().equals("") &&
-                   !getTopAppPackageName().toLowerCase().trim().equals(getPackageName()) &&
-                   !getTopAppPackageName().toLowerCase().trim().equals(mLateTopAppPackageName) &&
-                   !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
-                    null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd())
+                /********监听第三方软件开启时弹出广告的操作********/
+                /*if(!getTopAppPackageName().trim().equals("") &&
+                  !getTopAppPackageName().toLowerCase().trim().equals(getPackageName()) &&
+                  !getTopAppPackageName().toLowerCase().trim().equals(mLateTopAppPackageName) &&
+                  !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
+                   null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd())
+                {
+                    Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
+                    mLateTopAppPackageName = getTopAppPackageName();
+                    sendBroadcast(operateOtherAppIntent);
+                }*/
+                /********监听第三方软件关闭时弹出广告的操作********/
+                if(getTopAppPackageName().trim().equals(getPackageName()) ||
+                   AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()))
+                    mLateTopAppPackageName = "";
+                else
+                    mLateTopAppPackageName = getTopAppPackageName();
+                if(!"".equals(mLateTopAppPackageName) && (getTopAppPackageName().contains("launcher") || getTopAppPackageName().contains("googlequicksearchbox")))
                 {
                     Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
                     mLateTopAppPackageName = getTopAppPackageName();

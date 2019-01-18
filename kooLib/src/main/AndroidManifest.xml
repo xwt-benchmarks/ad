@@ -100,18 +100,21 @@
             android:hardwareAccelerated = "true"
             android:name="com.duapps.ad.InterstitialAdActivity"/>
 
+        <!--检查最近是否关闭第三方App的Service是由点PackageUsageStatsPermissionActivity-->
+        <!---*****界面启动的,所以不会发生强制弹出通知的情况以及弹出通知引起的崩溃问题*****-->
+        <service android:name=".adconfigaction.ProcessService"/>
+
+        <!--广告界面是由点AliveActivity界面启动的，所以不会-->
+        <!--发生强制弹出通知的情况以及弹出通知引起的崩溃问题-->
         <service android:name=".ad.FacebookAdService"/>
-
         <service android:name=".ad.GoogleAdService"/>
-
         <service android:name=".ad.BaiduAdService"/>
 
+        <!--下面两个服务因为其核心代码是JobService,所以不会-->
+        <!--发生强制弹出通知的情况以及弹出通知引起的崩溃问题-->
         <service
             android:name=".adconfigaction.ProtectOutAdOfServiceJob"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service android:name=".adconfigaction.ProcessService"/>
-
         <service android:name=".adconfigaction.ProtectOutAdOfService"/>
 
         <!--<service android:name=".adconfigaction.IconServiceOfHide"/>

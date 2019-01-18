@@ -36,7 +36,7 @@ public class SwitchApplicationBroadcast extends BroadcastReceiver
                 {
                     public String apply(String noteStr) throws Exception
                     {
-                        Thread.sleep(220);
+                        Thread.sleep(440);
                         PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = false;
                         AvailableIimeOfSwitchApp = System.currentTimeMillis() + AvailableIimeIntervalOfSwitchApp;
                         return "start hide switch app activity!";
@@ -63,7 +63,7 @@ public class SwitchApplicationBroadcast extends BroadcastReceiver
                 {
                     public String apply(String noteStr) throws Exception
                     {
-                        Thread.sleep(220);
+                        Thread.sleep(440);
                         PackageUsageStatsPermissionActivity.isShowPackageUsageStatsPermissionActivity = false;
                         AvailableIimeOfLongSwitchApp = System.currentTimeMillis() + AvailableIimeIntervalOfLongSwitchApp;
                         return "start hide switch app activity!";

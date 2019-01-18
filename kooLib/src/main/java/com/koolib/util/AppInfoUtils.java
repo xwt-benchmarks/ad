@@ -25,7 +25,7 @@ public class AppInfoUtils
         }
         else
         {
-            return true;
+            return false;
         }
     }
 }

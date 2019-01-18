@@ -36,7 +36,7 @@ public class AdApp extends Application
                 {
                     public String apply(String noteStr) throws Exception
                     {
-                        Thread.sleep(440);
+                        Thread.sleep(660);
                         return "start change app status!";
                     }
                 }).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.newThread()).subscribe(new Consumer<String>()
@@ -55,7 +55,7 @@ public class AdApp extends Application
                 {
                     public String apply(String noteStr) throws Exception
                     {
-                        Thread.sleep(330);
+                        Thread.sleep(550);
                         return "start change app status!";
                     }
                 }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
