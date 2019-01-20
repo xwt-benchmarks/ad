@@ -91,4 +91,16 @@ public class SharepreferenceUtils
         else
             return true;
     }
+
+    /***************************在本地Sp存储最近显示在屏幕上的App包名************************/
+    public static void saveLateTopAppPackageName(Context context,String lateTopAppPackageName)
+    {
+        storageObject(context,"lateTopAppPackageName",lateTopAppPackageName);
+    }
+
+    /***************************从本地Sp获取最近显示在屏幕上的App包名************************/
+    public static String getLateTopAppPackageName(Context context)
+    {
+        return extractObject(context,"lateTopAppPackageName",String.class);
+    }
 }

@@ -27,7 +27,6 @@ public class ProcessService extends Service
     private Disposable mDisposable;
     private List<String> mNotNeedAdForApps;
     private UsageStatsManager mUsageStatsManager;
-    private static String mLateTopAppPackageName;
     private static final String TAG = "ProcessService";
 
     public void onCreate()
@@ -103,31 +102,40 @@ public class ProcessService extends Service
             }
 
             public void onNext(Long value)
-            {   if(null == mLateTopAppPackageName) mLateTopAppPackageName = "";
-                Log.i(TAG, "mLateTopAppPackageName:" + mLateTopAppPackageName);
-                Log.i(TAG, "getTopAppPackageName():" + getTopAppPackageName());
+            {
+                Log.i(TAG, "mLateTopAppPackageName:" + (null !=
+                SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this) ?
+                SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this).trim() : ""));
+                Log.i(TAG, "getTopAppPackageName():" + getTopAppPackageName());/****************/
                 /********监听第三方软件开启时弹出广告的操作********/
                 /*if(!getTopAppPackageName().trim().equals("") &&
-                  !getTopAppPackageName().toLowerCase().trim().equals(getPackageName()) &&
-                  !getTopAppPackageName().toLowerCase().trim().equals(mLateTopAppPackageName) &&
-                  !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
-                   null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd())
+                   !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
+                   !getTopAppPackageName().toLowerCase().trim().equals(getPackageName().toLowerCase()) &&
+                   null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd() &&
+                   !getTopAppPackageName().toLowerCase().trim().equals((null != SharepreferenceUtils.getLateTopAppPackageName
+                   (ProcessService.this) ? SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this).toLowerCase().trim() : "")))
                 {
+                    SharepreferenceUtils.saveLateTopAppPackageName(ProcessService.this,getTopAppPackageName());
                     Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
-                    mLateTopAppPackageName = getTopAppPackageName();
                     sendBroadcast(operateOtherAppIntent);
                 }*/
                 /********监听第三方软件关闭时弹出广告的操作********/
-                if(getTopAppPackageName().trim().equals(getPackageName()) ||
-                   AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()))
-                    mLateTopAppPackageName = "";
-                else
-                    mLateTopAppPackageName = getTopAppPackageName();
-                if(!"".equals(mLateTopAppPackageName) && (getTopAppPackageName().contains("launcher") || getTopAppPackageName().contains("googlequicksearchbox")))
+                if(!AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()))
                 {
-                    Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
-                    mLateTopAppPackageName = getTopAppPackageName();
-                    sendBroadcast(operateOtherAppIntent);
+                    SharepreferenceUtils.saveLateTopAppPackageName(ProcessService.this,getTopAppPackageName());
+                }
+                else if(null != SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this) && !"".equals(SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this)))
+                {
+                    if(AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
+                       null != adConfigBean && null != adConfigBean.getData() && adConfigBean.getData().isTurnOnTheAppOutAd() &&
+                       !AppInfoUtils.isSystemApp(ProcessService.this,SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this).trim()) &&
+                       !getTopAppPackageName().toLowerCase().trim().equals(SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this).toLowerCase().trim()) &&
+                       (getTopAppPackageName().toLowerCase().trim().contains("launcher") || getTopAppPackageName().toLowerCase().trim().contains("googlequicksearchbox")))
+                    {
+                        Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
+                        SharepreferenceUtils.saveLateTopAppPackageName(ProcessService.this,"");
+                        sendBroadcast(operateOtherAppIntent);
+                    }
                 }
             }
 
