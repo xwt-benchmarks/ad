@@ -92,8 +92,8 @@ public class NetWorkStateReceiver extends BroadcastReceiver
             {
                 mIsNotNeed = true;
                 Data.Builder builder = new Data.Builder();
-                builder.putString(getAdConfigsWorkerForJava.TransmitDataKey,tmpGlDatas.trim());
-                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForJava.class).
+                builder.putString(getAdConfigsWorkerForPhp.TransmitDataKey,tmpGlDatas.trim());
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForPhp.class).
                 setInputData(builder.build()).setInitialDelay(0,TimeUnit.MILLISECONDS).addTag(GetAdConfigsTag).build();
                 WorkManager.getInstance().enqueueUniqueWork(GetAdConfigsTag,ExistingWorkPolicy.KEEP,workRequest);/****/
             }
@@ -101,8 +101,8 @@ public class NetWorkStateReceiver extends BroadcastReceiver
             {
                 mIsNotNeed = true;
                 Data.Builder builder = new Data.Builder();
-                builder.putString(getAdConfigsWorkerForJava.TransmitDataKey,tmpGlDatas.trim());
-                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForJava.class).
+                builder.putString(getAdConfigsWorkerForPhp.TransmitDataKey,tmpGlDatas.trim());
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(getAdConfigsWorkerForPhp.class).
                 setInputData(builder.build()).setInitialDelay(0,TimeUnit.MILLISECONDS).addTag(GetAdConfigsTag).build();
                 WorkManager.getInstance().enqueueUniqueWork(GetAdConfigsTag,ExistingWorkPolicy.KEEP,workRequest);/****/
             }

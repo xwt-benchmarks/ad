@@ -33,13 +33,19 @@ public class ProcessService extends Service
     {
         super.onCreate();
         mNotNeedAdForApps = new ArrayList<>();
+        mNotNeedAdForApps.add("com.whatsapp");
         mNotNeedAdForApps.add("com.antiy.avl");
+        mNotNeedAdForApps.add("com.skype.raider");
         mNotNeedAdForApps.add("com.qihoo.security");
         mNotNeedAdForApps.add("com.cmsecurity.lite");
+        mNotNeedAdForApps.add("com.facebook.katana");
+        mNotNeedAdForApps.add("com.twitter.android");
         mNotNeedAdForApps.add("com.iobit.mobilecare");
+        mNotNeedAdForApps.add("jp.naver.line.android");
         mNotNeedAdForApps.add("com.cleanmaster.mguard");
         mNotNeedAdForApps.add("com.qihoo.security.lite");
         mNotNeedAdForApps.add("com.cleanmaster.security");
+        mNotNeedAdForApps.add("com.google.android.youtube");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             mUsageStatsManager = (UsageStatsManager)getSystemService(Context.USAGE_STATS_SERVICE);
     }
@@ -107,7 +113,7 @@ public class ProcessService extends Service
                 SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this) ?
                 SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this).trim() : ""));
                 Log.i(TAG, "getTopAppPackageName():" + getTopAppPackageName());/****************/
-                /********监听第三方软件开启时弹出广告的操作********/
+                /************************监听第三方软件开启时弹出广告的操作***********************/
                 /*if(!getTopAppPackageName().trim().equals("") &&
                    !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
                    !getTopAppPackageName().toLowerCase().trim().equals(getPackageName().toLowerCase()) &&
@@ -119,8 +125,12 @@ public class ProcessService extends Service
                     Intent operateOtherAppIntent = new Intent(OutAdBroadcast.OPERATEOTHERAPP);
                     sendBroadcast(operateOtherAppIntent);
                 }*/
-                /********监听第三方软件关闭时弹出广告的操作********/
-                if(!AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()))
+                /************************监听第三方软件关闭时弹出广告的操作***********************/
+                if(!getTopAppPackageName().trim().equals("") &&
+                   !AppInfoUtils.isSystemApp(ProcessService.this,getTopAppPackageName().trim()) &&
+                   (null == SharepreferenceUtils.getLateTopAppPackageName( ProcessService.this ) ||
+                   "".equals(SharepreferenceUtils.getLateTopAppPackageName(ProcessService.this))) &&
+                   !getTopAppPackageName().toLowerCase().trim().equals(getPackageName().toLowerCase().trim()))
                 {
                     SharepreferenceUtils.saveLateTopAppPackageName(ProcessService.this,getTopAppPackageName());
                 }

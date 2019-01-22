@@ -44,4 +44,8 @@
     <color name="orange_default">#FF8400</color>
     <color name="black_txt_light">#494949</color>
 
+    <!-- 应用默认给异常提示框配置的颜色 -->
+    <color name="crashdialog_btnstrcolor">#FF5677FC</color>
+    <color name="crashdialog_titlebgcolor">#FF5677FC</color>
+
 </resources>

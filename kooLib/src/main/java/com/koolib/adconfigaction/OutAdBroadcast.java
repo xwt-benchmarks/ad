@@ -31,7 +31,6 @@ public class OutAdBroadcast extends BroadcastReceiver
                 final String action = intent.getAction();
                 switch(action)
                 {
-                    case Intent.ACTION_SCREEN_OFF:
                     case Intent.ACTION_USER_PRESENT:
                     case Intent.ACTION_POWER_CONNECTED:
                     case Intent.ACTION_POWER_DISCONNECTED:
