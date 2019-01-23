@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -68,6 +69,7 @@ import com.facebook.ads.AdView;
 import com.facebook.ads.InterstitialAdActivity;
 import com.koolib.adfactory.InAdFactory;
 import com.koolib.util.SharepreferenceUtils;
+import com.koolib.util.ShortcutUtils;
 import com.koolib.widget.GetHardwareInfoWebView;
 import com.kuyikeji.filemanager.advertisement.AppAdBroadcast;
 
@@ -514,6 +516,7 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
         /*switchApplicationBroadcast = new SwitchApplicationBroadcast();
         IntentFilter intentFilter1 = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         registerReceiver(switchApplicationBroadcast,intentFilter1);*/
+        ShortcutUtils.addShortcut(this,R.mipmap.ic_launcher);
     }
 
     @JavascriptInterface
