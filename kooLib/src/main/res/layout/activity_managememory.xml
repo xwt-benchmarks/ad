@@ -104,5 +104,4 @@
         android:layout_height="wrap_content"
         android:text="@string/clearallmemory"
         android:textColor="@android:color/white"/>
-
 </LinearLayout>
