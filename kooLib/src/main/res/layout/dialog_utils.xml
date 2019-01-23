@@ -58,7 +58,7 @@
                 android:text="正文"/>
 
             <EditText
-                android:background="@drawable/shap_rect_round_trans_white"
+                android:background="@drawable/shape_rect_round_trans_white"
                 android:textColor="@color/green_txt"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
