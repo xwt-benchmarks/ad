@@ -161,7 +161,7 @@ public class CompressedExplorerFragment extends Fragment implements BottomBarBut
         super.onActivityCreated(savedInstanceState);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         compressedFile = new File(Uri.parse(getArguments().getString(KEY_PATH)).getPath());
-    
+
         mToolbarContainer = mainActivity.getAppbar().getAppbarLayout();
         mToolbarContainer.setOnTouchListener((view, motionEvent) ->
         {

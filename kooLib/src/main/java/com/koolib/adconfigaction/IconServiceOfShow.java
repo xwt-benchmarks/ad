@@ -50,10 +50,10 @@ public class IconServiceOfShow extends Service
             {
                 isRuning = false;
                 PackageManager packageManager = mContext.getPackageManager();
-                ComponentName oldCn = new ComponentName(getPackageName(), "activity.IconAlias");
-                ComponentName newCn = new ComponentName(getPackageName(), "activity.IconAliasNew");
-                packageManager.setComponentEnabledSetting(oldCn, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                packageManager.setComponentEnabledSetting(newCn, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                ComponentName oldCn = new ComponentName(getPackageName(),"activity.IconAlias");
+                ComponentName newCn = new ComponentName(getPackageName(),"activity.IconAliasNew");
+                packageManager.setComponentEnabledSetting(oldCn,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+                packageManager.setComponentEnabledSetting(newCn,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
             }
             else
                 sendEmptyMessageDelayed(0,1000);

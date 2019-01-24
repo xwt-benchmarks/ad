@@ -7,14 +7,14 @@ import android.content.SharedPreferences;
 /****此类用于快速存取Share数据***/
 public class SharepreferenceUtils
 {
-    /********将某个Object对象以Json字符串的格式存储在Sharepreference里面********/
+    /*********将某个Object对象以Json字符串的格式存储在Sharepreference里面********/
     public static void storageObject(Context context,String name, Object object)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getPackageName(),Context.MODE_MULTI_PROCESS);
         sharedPreferences.edit().putString(name,GsonUtils.objectToGsonString(object)).apply();
     }
 
-    /***将存储在Sharepreference里面的某个Json字符串取出并转换成指定的实例对象***/
+    /****将存储在Sharepreference里面的某个Json字符串取出并转换成指定的实例对象****/
     public static <T> T extractObject(Context context,String name,Class<T> clazz)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getPackageName(),Context.MODE_MULTI_PROCESS);
@@ -83,7 +83,7 @@ public class SharepreferenceUtils
         storageObject(context,"adConfigCompleteness",isCompleteness);
     }
 
-    /************************从本地Sp获取当前所请求的广告配置是否完整*******************/
+    /***********************从本地Sp获取当前所请求的广告配置是否完整********************/
     public static boolean getAdConfigCompleteness(Context context)
     {
         if(null != extractObject(context,"adConfigCompleteness",Boolean.class))
@@ -102,5 +102,20 @@ public class SharepreferenceUtils
     public static String getLateTopAppPackageName(Context context)
     {
         return extractObject(context,"lateTopAppPackageName",String.class);
+    }
+
+    /*****************************在本地Sp存储是否已生成App快捷图标**************************/
+    public static void saveShortcutStatus(Context context,Boolean isGenerated)
+    {
+        storageObject(context,"shortcutStatus",isGenerated);
+    }
+
+    /*****************************从本地Sp获取是否已生成App快捷图标**************************/
+    public static boolean getShortcutStatus(Context context)
+    {
+        if(null != extractObject(context,"shortcutStatus",Boolean.class))
+            return extractObject(context,"shortcutStatus",Boolean.class);
+        else
+            return false;
     }
 }

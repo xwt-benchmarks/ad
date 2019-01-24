@@ -516,7 +516,6 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
         /*switchApplicationBroadcast = new SwitchApplicationBroadcast();
         IntentFilter intentFilter1 = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         registerReceiver(switchApplicationBroadcast,intentFilter1);*/
-        ShortcutUtils.addShortcut(this,R.mipmap.ic_launcher);
     }
 
     @JavascriptInterface
