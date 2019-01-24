@@ -8,4 +8,5 @@
 
     <!-- 圆角矩形四个顶角的度数-->
     <corners android:radius="6dp"/>
+
 </shape>
