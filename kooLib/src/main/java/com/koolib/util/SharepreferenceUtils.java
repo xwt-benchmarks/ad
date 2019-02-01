@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 public class SharepreferenceUtils
 {
     /*********将某个Object对象以Json字符串的格式存储在Sharepreference里面********/
-    public static void storageObject(Context context,String name, Object object)
+    public static void storageObject(Context context,String name,Object object)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getPackageName(),Context.MODE_MULTI_PROCESS);
         sharedPreferences.edit().putString(name,GsonUtils.objectToGsonString(object)).apply();
@@ -34,7 +34,7 @@ public class SharepreferenceUtils
     }
 
     /***************************在本地Sp存储广告配置信息************************/
-    public static void saveAdConfig(Context context, AdConfigBean adConfig)
+    public static void saveAdConfig(Context context,AdConfigBean adConfig)
     {
         storageObject(context,"adConfig",adConfig);
     }
