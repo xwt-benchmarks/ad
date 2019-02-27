@@ -124,7 +124,6 @@
 
 
 
-
 #-----PlayServicesAds(Google)-----#
 -dontwarn com.google.**
 -keepnames class com.google.**{*;}
@@ -132,41 +131,35 @@
 -keepnames class * extends com.google.**{*;}
 -keepnames class * implements com.google.**{*;}
 -keepnames interface * extends com.google.**{*;}
+#----PlayServicesAds(Facebook)----#
+-dontwarn com.facebook.**
+-keepnames class com.facebook.**{*;}
+-keepnames interface com.facebook.**{*;}
+-keepnames class * extends com.facebook.**{*;}
+-keepnames class * implements com.facebook.**{*;}
+-keepnames interface * extends com.facebook.**{*;}
+#-----PlayServicesAds(Baidu)------#
+-dontwarn com.duapps.ad.**
+-keepnames class com.duapps.ad.**{*;}
+-keepnames interface com.duapps.ad.**{*;}
+-keepnames class * extends com.duapps.ad.**{*;}
+-keepnames class * implements com.duapps.ad.**{*;}
+-keepnames interface * extends com.duapps.ad.**{*;}
+
 
 
 ####################################################################################################
 ##########################################远端混淆配置###############################################
 #-------------------------------------------第三方库-------------------------------------------------
-#------------Zxing----------#
--dontwarn com.google.zxing.**
--keepnames class com.google.zxing.**{*;}
-#-----------Pinyin4j--------#
--dontwarn com.hp.hpl.sparta.**
--keepnames class com.hp.hpl.sparta.**{*;}
-#------NineOldAndroids------#
--dontwarn com.nineoldandroids.**
--keepnames class com.nineoldandroids.**{*;}
-#-------PictureSelector-----#
--dontwarn com.yalantis.ucrop.**
--dontwarn com.luck.picture.lib.**
--keepnames class com.yalantis.ucrop.**{*;}
--keepnames class com.luck.picture.lib.**{*;}
+#---PermissionsDispatcher---#
+-dontwarn permissions.dispatcher.**
+-keep class permissions.dispatcher.**{*;}
+-keep interface permissions.dispatcher.**{*;}
 #-------------Gson----------#
 -keepattributes *Annotation*
 -keep class sun.misc.Unsafe {*;}
 #-keepnames class com.google.gson.**{*;}
 -keepnames class com.google.gson.stream.**{*;}
-#---PermissionsDispatcher---#
--dontwarn permissions.dispatcher.**
--keep class permissions.dispatcher.**{*;}
--keep interface permissions.dispatcher.**{*;}
-#--------FlycoDialog--------#
--dontwarn com.flyco.**
--keepnames class com.flyco.**{*;}
--keepnames interface com.flyco.**{*;}
--keepnames class * extends com.flyco.**{*;}
--keepnames class * implements com.flyco.**{*;}
--keepnames interface * extends com.flyco.**{*;}
 #---------DeviceInfo--------#
 -dontwarn com.an.deviceinfo.**
 -keepnames class com.an.deviceinfo.**{*;}
@@ -178,47 +171,14 @@
 -keepnames class * extends androidx.work.**{*;}
 -keepnames class * implements androidx.work.**{*;}
 -keepnames interface * extends androidx.work.**{*;}
-#--------Immersionbar-------#
--dontwarn com.gyf.barlibrary.**
--keepnames class com.gyf.barlibrary.**{*;}
--keepnames interface com.gyf.barlibrary.**{*;}
--keepnames class * extends com.gyf.barlibrary.**{*;}
--keepnames class * implements com.gyf.barlibrary.**{*;}
--keepnames interface * extends com.gyf.barlibrary.**{*;}
 #---------HelloDaemon-------#
 -dontwarn com.xdandroid.hellodaemon.**
 -keep class com.xdandroid.hellodaemon.**{*;}
 -keepnames class * extends com.xdandroid.hellodaemon.**{*;}
-
 #-----Android-Processes-----#
 -dontwarn com.jaredrummler.android.processe.**
 -keep class com.jaredrummler.android.processe.**{*;}
 -keepnames class * extends com.jaredrummler.android.processe.**{*;}
-#-----NumberProgressbar-----#
--dontwarn com.daimajia.numberprogressbar.**
--keepnames class com.daimajia.numberprogressbar.**{*;}
--keepnames interface com.daimajia.numberprogressbar.**{*;}
--keepnames class * extends com.daimajia.numberprogressbar.**{*;}
--keepnames class * implements com.daimajia.numberprogressbar.**{*;}
--keepnames interface * extends com.daimajia.numberprogressbar.**{*;}
-#-----AndroidAutoSize-------#
--dontwarn me.jessyan.autosize.**
--keepnames class me.jessyan.autosize.**{*;}
--keepnames interface me.jessyan.autosize.**{*;}
--keepnames class * extends me.jessyan.autosize.**{*;}
--keepnames class * implements me.jessyan.autosize.**{*;}
--keepnames interface * extends me.jessyan.autosize.**{*;}
-#---------PhotoView---------#
--dontwarn com.github.chrisbanes.photoview.**
--keepnames class com.github.chrisbanes.photoview.**{*;}
--keepnames interface com.github.chrisbanes.photoview.**{*;}
--keepnames class * extends com.github.chrisbanes.photoview.**{*;}
--keepnames class * implements com.github.chrisbanes.photoview.**{*;}
--keepnames interface * extends com.github.chrisbanes.photoview.**{*;}
-#---------Bga-Banner--------#
--dontwarn cn.bingoogolapple.bgabanner.**
--keepnames class cn.bingoogolapple.bgabanner.**{*;}
--keepnames interface cn.bingoogolapple.bgabanner.**{*;}
 #-----------Okhttp3---------#
 -dontwarn okio.**
 #-dontwarn okhttp3.**
@@ -226,14 +186,6 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.*
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-#------------Glide-----------#
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.ImageHeaderParser$**{**[] $VALUES;public *;}
-#---Glide-Transformations----#
--dontwarn jp.wasabeef.glide.transformations.**
--keepnames class jp.wasabeef.glide.transformations.**{*;}
--keepnames class * extends jp.wasabeef.glide.transformations.**{*;}
 #----------Retrofit2---------#
 -dontwarn kotlin.Unit
 -dontwarn retrofit2.**
@@ -257,17 +209,6 @@
     public com.liulishuo.okdownload.core.breakpoint.DownloadStore createRemitSelf();
     public com.liulishuo.okdownload.core.breakpoint.BreakpointStoreOnSQLite(android.content.Context);
 }
-#--BaseRecyclerViewAdapterHelper--#
--dontwarn com.chad.library.adapter.**
--keep class com.chad.library.adapter.**{*;}
--keep public class * extends com.chad.library.adapter.base.BaseViewHolder
--keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
--keepclassmembers class **$** extends com.chad.library.adapter.base.BaseViewHolder{<init>(...);}
-#-----------EventBus--------#
--keepattributes *Annotation*
--keep enum org.greenrobot.eventbus.ThreadMode{*;}
--keepclassmembers class *{@org.greenrobot.eventbus.Subscribe <methods>;}
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent{<init>(java.lang.Throwable);}
 #------RxJava,RxAndroid-----#
 -dontwarn sun.misc.**
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field*{long producerIndex;long consumerIndex;}
